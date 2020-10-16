@@ -26,7 +26,7 @@ def set_headers():
 def set_data(stc_id, stc_name):
     data = {
         "template_object": json.dumps({"object_type": "text",
-                                       "text": "급등예상 종목확인!!\n "
+                                       "text": "상승예상 종목확인!!\n "
                                                "["+stc_name+"]\n"
                                                " https://finance.naver.com/item/main.nhn?code="+stc_id,
                                        "link": {
