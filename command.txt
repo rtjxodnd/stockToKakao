@@ -34,3 +34,6 @@ sudo service cron stop
 
 #크론탭 재시작
 sudo service cron restart
+
+#git pull
+git pull origin master
