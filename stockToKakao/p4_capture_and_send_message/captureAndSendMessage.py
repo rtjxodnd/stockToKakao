@@ -34,6 +34,7 @@ def set_data(stc_id, stc_name):
                                            "mobile_web_url": "https://www.daum.com/"},
                                        "button_title": "네이버증권 바로가기"
                                        })}
+    print('\n송신대상: '+stc_id+"["+stc_name+"]")
     return data
 
 
