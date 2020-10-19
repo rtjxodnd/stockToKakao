@@ -11,8 +11,8 @@ body:before{
   vertical-align:middle;
 }
 button{
-  background:#1AAB8A;
-  color:#fff;
+  background:#F7E600;
+  color:#3A1D1D;
   border:none;
   position:relative;
   height:60px;
@@ -23,8 +23,8 @@ button{
   outline:none;
 }
 button:hover{
-  background:#fff;
-  color:#1AAB8A;
+  background:#3A1D1D;
+  color:#F7E600;
 }
 button:before,button:after{
   content:'';
@@ -33,7 +33,7 @@ button:before,button:after{
   right:0;
   height:2px;
   width:0;
-  background: #1AAB8A;
+  background: #F7E600;
   transition:400ms ease all;
 }
 button:after{
