@@ -72,7 +72,7 @@ def main_process():
             # 메시지송신
             send_message(headers, data)
 
-    print("메시지 송신 완료")
+    print("\n메시지 송신 완료")
 
 
 if __name__ == "__main__":
