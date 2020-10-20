@@ -29,11 +29,10 @@ def main_process():
     # 대상건 조회
     db_class = dbModule.Database()
     sql = "SELECT stc_id, stc_name from stock_search.stock_basic " \
-          "WHERE tot_value < 150000000000 and face_price > 0 " \
+          "WHERE tot_value < 500000000000 and face_price > 0 " \
           "and substr(stc_name,-1) not in ('우', 'B', 'C') and stc_name not like '%%스팩%%'"
     rows = db_class.executeAll(sql)
-    tot_cnt = len(rows)
-    print(tot_cnt)
+
     # 조회된 건수 바탕으로 판별 및 송신
     for i, row in enumerate(rows):
 
