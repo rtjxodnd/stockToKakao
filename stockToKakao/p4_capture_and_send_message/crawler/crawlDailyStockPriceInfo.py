@@ -58,11 +58,18 @@ def find_stock_values_of_one(tds):
     base_dt = tds[0].find("span").text.replace(".", "")  # 기준일
     cls_price = tds[1].find("span").text.replace(",", "")  # 금일종가
     opn_price = tds[3].find("span").text.replace(",", "")  # 시가
+    hig_price = tds[4].find("span").text.replace(",", "")  # 고가
+    low_price = tds[5].find("span").text.replace(",", "")  # 저가
     deal_qnt = tds[6].text.replace(",", "")  # 거래량
     deal_amt = float(cls_price) * float(deal_qnt)  # 거래금액
 
     # 결과세팅
-    result_value = {"baseDt": base_dt, "cls_price": cls_price, "opn_price": opn_price, "dealAmt": deal_amt}
+    result_value = {"baseDt": base_dt,
+                    "cls_price": cls_price,
+                    "opn_price": opn_price,
+                    "hig_price": hig_price,
+                    "low_price": low_price,
+                    "dealAmt": deal_amt}
 
     # return
     return result_value
@@ -86,7 +93,7 @@ def find_stock_values_of_one_page(stock_id):
 
         # 필요 데이터 추출
         result_value = []
-        for order in range(0, 3):
+        for order in range(0, 5):
             tr = trs[order]
             tds = tr.find_all("td")
             result_value.append(find_stock_values_of_one(tds))
