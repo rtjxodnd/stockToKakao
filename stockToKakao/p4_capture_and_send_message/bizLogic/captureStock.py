@@ -27,13 +27,13 @@ def capture_stock(stc_id):
         return False
 
     # 당일 저가가 5일 평균 하회 하면 false 리턴
-    # avg_5 = (float(tdy_prices_info['cls_price']) +
-    #          float(bf1_prices_info['cls_price']) +
-    #          float(bf2_prices_info['cls_price']) +
-    #          float(bf3_prices_info['cls_price']) +
-    #          float(bf4_prices_info['cls_price'])) / 5
-    # if float(tdy_prices_info['low_price']) < avg_5:
-    #     return False
+    avg_5 = (float(tdy_prices_info['cls_price']) +
+             float(bf1_prices_info['cls_price']) +
+             float(bf2_prices_info['cls_price']) +
+             float(bf3_prices_info['cls_price']) +
+             float(bf4_prices_info['cls_price'])) / 5
+    if float(tdy_prices_info['low_price']) < avg_5:
+        return False
 
     # 끝까지 모든 조건 충족시 True 리턴
     return True
