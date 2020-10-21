@@ -8,12 +8,11 @@ from stockToKakao.p3_get_filtered_stock_info.bizLogic.screen import main_process
 
 
 # DB 값 수정
-def update_stock_info(stc_id):
+def update_stock_info(db_class, stc_id):
     # 로거
     logger = logging.getLogger(__name__)
 
     try:
-        db_class = dbModule.Database()
         sql = "UPDATE stock_search.stock_basic SET filter_yn = '%s' WHERE stc_id = '%s'" % ('Y', stc_id)
         db_class.execute(sql)
         db_class.commit()
@@ -26,8 +25,16 @@ def update_stock_info(stc_id):
 
 
 def main_process():
-    # 대상건 조회
+    # db 모듈선언
     db_class = dbModule.Database()
+
+    # 초기화
+    sql = "UPDATE stock_search.stock_basic SET filter_yn = 'N'"
+    db_class.execute(sql)
+    db_class.commit()
+
+    # 대상건 조회
+
     sql = "SELECT stc_id, stc_name from stock_search.stock_basic " \
           "WHERE tot_value < 500000000000 and face_price > 0 " \
           "and substr(stc_name,-1) not in ('우', 'B', 'C') and stc_name not like '%%스팩%%'"
@@ -46,9 +53,10 @@ def main_process():
         if screen(stc_id):
 
             # db 값 변경
-            update_stock_info(stc_id)
+            update_stock_info(db_class, stc_id)
 
     # 종료 메시지
+    db_class.commit()
     print("판단완료!!!!")
 
 
