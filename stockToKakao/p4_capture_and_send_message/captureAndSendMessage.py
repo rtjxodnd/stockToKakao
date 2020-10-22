@@ -59,8 +59,8 @@ def main_process():
     # DB 모듈선언
     db_class = dbModule.Database()
 
-    # 당일 수행된 데이타가 있다면 clear
-    sql = "UPDATE stock_search.stock_basic SET capture_tcd = '', capture_dt = '' where capture_dt = '%s'" % today
+    # 당일 기 수행된 데이타가 있다면 clear
+    sql = "DELETE from stock_search.stock_captured WHERE capture_tcd = '01'AND capture_dt = '%s'" % today
     db_class.execute(sql)
     db_class.commit()
 
@@ -81,7 +81,8 @@ def main_process():
             data = set_data(stc_id, stc_name)
 
             # 결과저장
-            sql = "UPDATE stock_search.stock_basic SET capture_tcd = '01', capture_dt = '%s' where stc_id = '%s'" % (today, stc_id)
+            sql = "insert into stock_search.stock_captured (capture_dt, stc_id ,capture_tcd ) " \
+                  "values( '%s','%s','01')" % (today, stc_id)
             db_class.execute(sql)
             db_class.commit()
 
