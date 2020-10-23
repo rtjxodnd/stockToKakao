@@ -5,20 +5,20 @@ from stockToKakao.commonModule.calcModule import getTikPrice, remove_outlier
 
 
 # 종목 스크린 main
-def cal_before_resistance_price(stc_dvsn, now_price, hiLoList):
+def cal_before_resistance_price(stc_dvsn, now_price, priceList):
     # 함수호출 위한 reshape
-    x = np.reshape(hiLoList, (-1, 1))
+    x = np.reshape(priceList, (-1, 1))
 
     # 함수 사용해서 이상치 값 삭제
     remove_outlier_x = remove_outlier(input_list=x, weight=1.5)
     remove_outlier_x = np.reshape(remove_outlier_x, (-1, 1))
 
-    # 해당가격 의 호가 산출
+    # 해당가격의 호가 산출
     ticPrice = getTikPrice(stc_dvsn, now_price)
 
     # DBSCAN의 적정인자 세팅
-    eps_value = ticPrice*2  # 2틱
-    min_samples_value = math.floor(len(x) / 2 / 10)  # 기간의 1/10
+    eps_value = ticPrice  # 1틱
+    min_samples_value = 5
 
     # 군집알고리즘 수행
     db = DBSCAN(eps=eps_value, min_samples=min_samples_value, metric='euclidean')
@@ -46,4 +46,4 @@ def cal_before_resistance_price(stc_dvsn, now_price, hiLoList):
 
 
 if __name__ == '__main__':
-    print(cal_before_resistance_price('005930'))
+    print(cal_before_resistance_price())

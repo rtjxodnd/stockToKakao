@@ -18,6 +18,7 @@ def main_process(term):
 
     # 대상건 조회
     sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where filter_yn = 'Y'"
+    sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where stc_id = '005930'"
     rows = db_class.executeAll(sql)
 
     # 조회된 건수 바탕으로 전고점 추출
@@ -31,13 +32,13 @@ def main_process(term):
         priceList = crawlPrice(stc_id, term)
 
         # 가격정보중 고가/저가만 추출하여 저장
-        hiLoList = []
+        extractList = []
         for priceInfo in priceList:
-            hiLoList.append(int(priceInfo['hig_price']))
-            hiLoList.append(int(priceInfo['low_price']))
+            extractList.append(int(priceInfo['hig_price']))
+            extractList.append(int(priceInfo['low_price']))
 
         # 전고점 계산
-        before_resistance_price = cbrp(stc_dvsn, now_price, hiLoList)
+        before_resistance_price = cbrp(stc_dvsn, now_price, extractList)
         before_resistance_price_str = listToString(before_resistance_price)
 
         # 결과저장
@@ -54,4 +55,4 @@ def main_process(term):
 
 
 if __name__ == "__main__":
-    main_process(3)
+    main_process(12)
