@@ -18,7 +18,7 @@ def main_process(term):
 
     # 대상건 조회
     sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where filter_yn = 'Y'"
-    # sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where stc_id = '005930'"
+    # sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where stc_id = '000590'"
     rows = db_class.executeAll(sql)
 
     # 조회된 건수 바탕으로 전고점 추출
@@ -40,7 +40,7 @@ def main_process(term):
         # 전고점 계산
         before_resistance_price = cbrp(stc_dvsn, now_price, extractList)
         before_resistance_price_str = listToString(before_resistance_price)
-
+        # print(before_resistance_price_str)
         # 결과저장
         sql = "UPDATE stock_search.stock_basic set before_resistance_price = '%s' where stc_id = '%s'" \
               % (before_resistance_price_str, stc_id)
