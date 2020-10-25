@@ -17,7 +17,7 @@ def cal_before_resistance_price(stc_dvsn, now_price, priceList):
     ticPrice = getTikPrice(stc_dvsn, now_price)
 
     # DBSCAN의 적정인자 세팅
-    eps_value = ticPrice*2  # 1틱
+    eps_value = ticPrice*6  # 6틱
     min_samples_value = 15
 
     # 군집알고리즘 수행
