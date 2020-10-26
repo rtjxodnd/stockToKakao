@@ -5,10 +5,6 @@ import requests
 from bs4 import BeautifulSoup
 import logging
 import sys
-import os
-import math
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 from stockToKakao.chromedriver.setPageDriver import set_page_driver
 
 
