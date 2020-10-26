@@ -4,8 +4,8 @@ from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 from stockToKakao.commonModule import dbModule
-from stockToKakao.p5_set_before_resistance_price.crawler.crawlDailyStockPriceInfo import main_process as crawlPrice
-from stockToKakao.p5_set_before_resistance_price.bizLogic.calbfResisPrice import cal_before_resistance_price as cbrp
+from stockToKakao.p5_set_resistance_price.crawler.crawlDailyStockPriceInfo import main_process as crawlPrice
+from stockToKakao.p5_set_resistance_price.bizLogic.calResisPrice import cal_resistance_price as crp
 from stockToKakao.commonModule.calcModule import listToString
 
 def main_process(term):
@@ -38,12 +38,12 @@ def main_process(term):
             extractList.append(int(priceInfo['low_price']))
 
         # 전고점 계산
-        before_resistance_price = cbrp(stc_dvsn, now_price, extractList)
-        before_resistance_price_str = listToString(before_resistance_price)
-        # print(before_resistance_price_str)
+        resistance_price = crp(stc_dvsn, now_price, extractList)
+        resistance_price_str = listToString(resistance_price)
+        # print(resistance_price_str)
         # 결과저장
-        sql = "UPDATE stock_search.stock_basic set before_resistance_price = '%s' where stc_id = '%s'" \
-              % (before_resistance_price_str, stc_id)
+        sql = "UPDATE stock_search.stock_basic set resistance_price = '%s' where stc_id = '%s'" \
+              % (resistance_price_str, stc_id)
         db_class.execute(sql)
         db_class.commit()
 

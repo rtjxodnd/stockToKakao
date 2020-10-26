@@ -5,7 +5,7 @@ from stockToKakao.commonModule.calcModule import getTikPrice, remove_outlier
 
 
 # 종목 스크린 main
-def cal_before_resistance_price(stc_dvsn, now_price, priceList):
+def cal_resistance_price(stc_dvsn, now_price, priceList):
     # 함수호출 위한 reshape
     x = np.reshape(priceList, (-1, 1))
 
@@ -46,4 +46,4 @@ def cal_before_resistance_price(stc_dvsn, now_price, priceList):
 
 
 if __name__ == '__main__':
-    print(cal_before_resistance_price())
+    print(cal_resistance_price())
