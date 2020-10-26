@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
-from stockToKakao.commonModule import dbModule
+from stockToKakao.commonModule import dbModule, ipModule
 from stockToKakao.p6_set_bp_and_send_message.crawler.crawlStockNowPrice import getStockNowPrice
 
 
@@ -49,6 +49,25 @@ def send_message(headers, data):
         print('메시지를 성공적으로 보내지 못했습니다. 오류메시지 : ' + str(response.json()))
 
 
+def select_work_mode():
+    ip_name = ipModule.get_ip()['ip_name']
+    time = datetime.today().strftime("%H%M%S")
+    workMode = ""
+
+    if ip_name == 'awsServer':
+        if time >= '000000' and time < '070000':
+            workMode = '1'
+        else:
+            workMode = '2'
+    elif ip_name == 'localServer':
+        if time >= '090000' and time < '160000':
+            workMode = '1'
+        else:
+            workMode = '2'
+
+    return workMode
+
+
 def main_process():
     # # 헤더세팅
     # headers = set_headers()
@@ -57,7 +76,7 @@ def main_process():
     today = datetime.today().strftime("%Y%m%d")
     time = datetime.today().strftime("%H%M%S")
 
-    print(today, time)
+    print(today, time, select_work_mode())
     # # DB 모듈선언
     # db_class = dbModule.Database()
     #
