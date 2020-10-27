@@ -4,6 +4,7 @@
 import requests
 from bs4 import BeautifulSoup
 import logging
+import math
 import sys
 from stockToKakao.chromedriver.setPageDriver import set_page_driver
 
