@@ -52,7 +52,7 @@ def sub_process_01():
 
         # 현재가가 다음 전고점보다 높아졌으면서 거래량 및 가격 기준에 부합하는 경우
         # 메시지 송신
-        if now_price > next_price and increase_yn():
+        if now_price > next_price and increase_yn(stc_id):
             # 데이터세팅
             data = messageModule.set_data(stc_id, stc_name, "전고점 돌파!!!")
             # 메시지송신
