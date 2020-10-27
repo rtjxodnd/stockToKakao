@@ -138,20 +138,33 @@ def main_process():
     # 코스피(소속=0, 전체 페이지=31)
     sosok = 0
     tot_pages = 32 + 1
+
     for page in range(1, tot_pages):
-        # 한페이지의 data 추출
-        if find_one_page_values(sosok, page)['endOfData'] == 'Y':
-            logger.error("kospi data 끝")
-            break
+        try:
+            # 한페이지의 data 추출
+            if find_one_page_values(sosok, page)['endOfData'] == 'Y':
+                logger.error("kospi data 끝")
+                break
+        except Exception as ex:
+            logger.error("ERROR!!!!: main_process")
+            logger.error(ex)
 
     # 코스닥(소속=1, 전체 페이지=28)
     sosok = 1
     tot_pages = 29 + 1
+
     for page in range(1, tot_pages):
-        # 한페이지의 data 추출
-        if find_one_page_values(sosok, page)['endOfData'] == 'Y':
-            logger.error("kosdaq data 끝")
-            break
+        try:
+            # 한페이지의 data 추출
+            if find_one_page_values(sosok, page)['endOfData'] == 'Y':
+                logger.error("kosdaq data 끝")
+                break
+        except Exception as ex:
+            logger.error("ERROR!!!!: main_process")
+            logger.error(ex)
+
+    # 종료 메시지
+    print("종목정보 수신완료!!!!")
 
 
 if __name__ == "__main__":
