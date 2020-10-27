@@ -18,21 +18,21 @@ def increase_yn(stc_id):
         return False
 
     # 당일 거래량이 전거래일 거래량보다 상승 안했으면 false 리턴
-    # 기준: 10시 이전 50%, 11시 이전 60%, 12시 이전 70%, 13시 이전 80%, 14시 이전 100%, 15시 이전 120%, 16시 이전 150%
+    # 기준: 10시 이전 80%, 11시 이전 90%, 12시 이전 100%, 13시 이전 120%, 14시 이전 150%, 15시 이전 180%, 16시 이전 200%
     nowTime = int(timeModule.get_server_time()[0:2])
-    if nowTime <= 10 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*0.5:
+    if nowTime <= 10 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*0.8:
         return False
-    elif nowTime <= 11 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*0.6:
+    elif nowTime <= 11 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*0.9:
         return False
-    elif nowTime <= 12 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*0.7:
+    elif nowTime <= 12 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*1.0:
         return False
-    elif nowTime <= 13 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*0.8:
+    elif nowTime <= 13 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*1.2:
         return False
-    elif nowTime <= 14 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*1.0:
+    elif nowTime <= 14 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*1.5:
         return False
-    elif nowTime <= 15 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*1.2:
+    elif nowTime <= 15 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*1.8:
         return False
-    elif nowTime <= 16 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*1.5:
+    elif nowTime <= 16 and tdy_prices_info['dealAmt'] < bf1_prices_info['dealAmt']*2.0:
         return False
 
     # 끝까지 모든 조건 충족시 True 리턴
