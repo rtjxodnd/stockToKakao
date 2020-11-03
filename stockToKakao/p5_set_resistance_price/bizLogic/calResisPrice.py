@@ -4,7 +4,7 @@ import math
 from stockToKakao.commonModule.calcModule import getTikPrice, remove_outlier
 
 
-# 종목 스크린 main
+# 지지저항선 산출
 def cal_resistance_price(stc_dvsn, now_price, priceList):
     # 함수호출 위한 reshape
     x = np.reshape(priceList, (-1, 1))

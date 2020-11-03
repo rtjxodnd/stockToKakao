@@ -5,6 +5,7 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 from stockToKakao.commonModule import dbModule
 from stockToKakao.p3_get_filtered_stock_info.bizLogic.screen import main_process as screen
+from stockToKakao.p3_get_filtered_stock_info.crawler.crawlImpairedRatio import find_impaired_ratio
 
 # 로거
 logger = logging.getLogger(__name__)
@@ -12,8 +13,14 @@ logger = logging.getLogger(__name__)
 
 # DB 값 수정
 def update_stock_info(db_class, stc_id):
+
+    # 유통주식수 획득
+    num_of_circulation = find_impaired_ratio(stc_id)['num_of_circulation']
+
+    # DB Update
     try:
-        sql = "UPDATE stock_search.stock_basic SET filter_yn = '%s' WHERE stc_id = '%s'" % ('Y', stc_id)
+        sql = "UPDATE stock_search.stock_basic SET num_of_circulation = '%d', filter_yn = '%s'" \
+              "WHERE stc_id = '%s'" % (num_of_circulation, 'Y', stc_id)
         db_class.execute(sql)
         db_class.commit()
         return
