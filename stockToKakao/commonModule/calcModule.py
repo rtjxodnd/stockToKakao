@@ -96,3 +96,17 @@ def remove_outlier(input_list=None, weight=1.5):
 
     return remove_outlier_data
 
+
+# 변이계수, coefficient of variation, CV
+def coefficient_of_variation(valList):
+    # 평균
+    avg = np.mean(valList)
+
+    # 표준편차
+    std = np.std(valList)
+
+    # 변이계수
+    cv = round(std / avg * 100, 2)
+
+    # 결과리턴
+    return {"avg": avg, "std": std, "cv": cv}

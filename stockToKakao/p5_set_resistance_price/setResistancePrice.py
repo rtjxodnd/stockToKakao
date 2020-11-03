@@ -3,7 +3,7 @@ import os
 import logging
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
-from stockToKakao.commonModule import dbModule
+from stockToKakao.commonModule import dbModule, calcModule
 from stockToKakao.p5_set_resistance_price.crawler.crawlDailyStockPriceInfo import main_process as crawlPrice
 from stockToKakao.p5_set_resistance_price.bizLogic.calResisPrice import cal_resistance_price as crp
 from stockToKakao.commonModule.calcModule import listToString
@@ -19,7 +19,7 @@ def main_process(term):
 
     # 대상건 조회
     sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where filter_yn = 'Y'"
-    # sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where stc_id = '289010'"
+    # sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where stc_id = '158310'"
     rows = db_class.executeAll(sql)
 
     # 조회된 건수 바탕으로 전고점 추출
@@ -30,7 +30,7 @@ def main_process(term):
             stc_dvsn = row['stc_dvsn']
             now_price = row['now_price']
 
-            # 과거 시가, 종가 추출
+            # 과거 고가, 저가 추출
             priceList = crawlPrice(stc_id, term)
 
             # 가격정보중 고가/저가만 추출하여 저장
@@ -42,10 +42,24 @@ def main_process(term):
             # 전고점 계산
             resistance_price = crp(stc_dvsn, now_price, extractList)
             resistance_price_str = listToString(resistance_price)
-            # print(resistance_price_str)
+
+            # 과거 종가 추출(3개월)
+            priceList = crawlPrice(stc_id, 3)
+
+            # 가격정보중 종가만 추출하여 저장
+            extractList = []
+            for priceInfo in priceList:
+                extractList.append(int(priceInfo['cls_price']))
+
+            # 변이계수 계산
+            cv = calcModule.coefficient_of_variation(extractList)['cv']
+
+
             # 결과저장
-            sql = "UPDATE stock_search.stock_basic set resistance_price = '%s' where stc_id = '%s'" \
-                  % (resistance_price_str, stc_id)
+            sql = "UPDATE stock_search.stock_basic " \
+                  "set resistance_price = '%s' , coef_variation = '%f'" \
+                  "where stc_id = '%s'" \
+                  % (resistance_price_str, cv, stc_id)
             db_class.execute(sql)
             db_class.commit()
 
@@ -57,7 +71,7 @@ def main_process(term):
             logger.error(ex)
 
     db_class.commit()
-    print("전고점 설정 완료")
+    print("지지선 저항선 설정 완료")
 
 
 if __name__ == "__main__":
