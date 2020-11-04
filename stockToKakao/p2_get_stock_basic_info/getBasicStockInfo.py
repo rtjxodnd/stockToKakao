@@ -127,6 +127,24 @@ def stock_values_insert_to_db(insert_value):
         logger.error(ex)
 
 
+# 우선주여부 update
+def preferred_stock_values_update():
+
+    try:
+        db_class = dbModule.Database()
+        sql = "UPDATE stock_search.stock_basic set preferred_stc_yn = 'Y'" \
+              "WHERE substr(stc_name,-1) in ('우', 'B', 'C')" \
+              "and stc_name like '%우%'" \
+              "and stc_name not in ('미래에셋대우', '연우', '나우IB', '이오플로우')"
+        db_class.execute(sql)
+        db_class.commit()
+
+        return
+    except Exception as ex:
+        logger.error("ERROR!!!!: preferred_stock_values_update")
+        logger.error(ex)
+
+
 ###########################################################
 # Main 처리: 주식 기본 테이블삭제 후 data 읽어서 주식기본 테이블에 저장한다.
 ###########################################################
@@ -162,6 +180,9 @@ def main_process():
         except Exception as ex:
             logger.error("ERROR!!!!: main_process")
             logger.error(ex)
+
+    # 우선주여부 update
+    preferred_stock_values_update()
 
     # 종료 메시지
     print("종목정보 수신완료!!!!")

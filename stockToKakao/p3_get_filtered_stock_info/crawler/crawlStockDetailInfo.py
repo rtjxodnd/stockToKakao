@@ -28,6 +28,9 @@ def getStockDetailInfo(stc_id):
         # 투자의견정보
         opinion = asideInfo.find_all("div")[4].find("table", {"summary": "투자의견 정보", "class": "rwidth"})
 
+        # 시가총액정보
+        mrkCapInfo = asideInfo.find("div", {"class": "first"}).find("table", {"summary": "시가총액 정보"})
+
         # 분석 table
         analysis = bs_obj.find("div", {"class": "section cop_analysis"}).find("div", {"class": "sub_section"}).find("tbody").find_all("tr")
 
@@ -42,6 +45,9 @@ def getStockDetailInfo(stc_id):
         price52week = opinion.find_all("tr")[1].find("td")
         price_high_52week = price52week.find_all("em")[0].text.replace(",", "")
         price_low_52week = price52week.find_all("em")[1].text.replace(",", "")
+
+        # 상장주식수
+        num_of_listed_stc = mrkCapInfo.find_all("tr")[2].find("td").find("em").text.replace(",", "")
 
         # 재무요약
         sales_accounts = analysis[0].find_all("td")
@@ -58,6 +64,7 @@ def getStockDetailInfo(stc_id):
         result_value = {"now_price": now_price,
                         "price_high_52week": price_high_52week,
                         "price_low_52week": price_low_52week,
+                        "num_of_listed_stc": num_of_listed_stc,
                         "sales_accounts":
                             {"sales_account0": sales_accounts[0].text.replace("\n", "").replace("\t", "").replace(",", ""),
                              "sales_account1": sales_accounts[1].text.replace("\n", "").replace("\t", "").replace(",", ""),
@@ -148,4 +155,4 @@ def getStockDetailInfo(stc_id):
 
 
 if __name__ == '__main__':
-    print(getStockDetailInfo('005930'))
+    print(getStockDetailInfo('36328K'))
