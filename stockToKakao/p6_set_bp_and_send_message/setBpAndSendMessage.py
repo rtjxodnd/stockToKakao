@@ -1,6 +1,7 @@
 import sys
 import os
 import logging
+from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 from stockToKakao.commonModule import dbModule, messageModule, timeModule
@@ -19,6 +20,9 @@ def sub_process_01():
 
     # 메시지 헤더세팅
     headers = messageModule.set_headers()
+
+    # 당일
+    now_time = datetime.today().strftime("%Y%m%d%H%M%S")
 
     # 대상건 조회
     sql = "select a.stc_id, b.stc_name, a.now_price, a.before_price, a.next_price, b.resistance_price " \
@@ -52,6 +56,11 @@ def sub_process_01():
                       "set now_price = '%d', before_price= '%d', next_price= '%d'" \
                       "where stc_id = '%s'" % \
                       (now_price, new_price_value['before_price'], new_price_value['next_price'], stc_id)
+                db_class.execute(sql)
+
+                # 결과저장
+                sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd ) " \
+                      "values('%s', '%s', '%d', '02')" % (now_time, stc_id, now_price)
                 db_class.execute(sql)
                 db_class.commit()
 
