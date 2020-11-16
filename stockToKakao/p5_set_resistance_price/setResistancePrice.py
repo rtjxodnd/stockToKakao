@@ -18,8 +18,8 @@ def main_process(term):
     db_class = dbModule.Database()
 
     # 대상건 조회
-    sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where filter_yn = 'Y'"
-    # sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where stc_id = '158310'"
+    sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where filter_cd = '01'"
+    # sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where stc_id = '005930'"
     rows = db_class.executeAll(sql)
 
     # 조회된 건수 바탕으로 전고점 추출

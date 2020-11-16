@@ -18,18 +18,19 @@ def main_process():
     headers = messageModule.set_headers()
 
     # 당일
-    today = datetime.today().strftime("%Y%m%d")
+    now_time = datetime.today().strftime("%Y%m%d%H%M%S")
+    today = now_time[0:8]
 
     # DB 모듈선언
     db_class = dbModule.Database()
 
     # 당일 기 수행된 데이타가 있다면 clear
-    sql = "DELETE from stock_search.stock_captured WHERE capture_tcd = '01'AND capture_dt = '%s'" % today
+    sql = "DELETE from stock_search.stock_captured WHERE capture_tcd = '01'AND substring(capture_dttm, 1, 8) = '%s'" % today
     db_class.execute(sql)
     db_class.commit()
 
     # 대상건 조회
-    sql = "SELECT stc_id, stc_name from stock_search.stock_basic where filter_yn = 'Y'"
+    sql = "SELECT stc_id, stc_name from stock_search.stock_basic where filter_cd = '01'"
     rows = db_class.executeAll(sql)
 
     # 조회된 건수 바탕으로 판별 및 송신
@@ -39,15 +40,16 @@ def main_process():
             stc_id = row['stc_id']
             stc_name = row['stc_name']
 
-            # 판별 및 전송
-            if capture_stock(stc_id):
+            # 판별 및 전송 (capture_stock 은 조건에 맞으면 종가를 리턴하고 조건에 안맞으면 0을 리턴한다.)
+            price = capture_stock(stc_id)
+            if price > 0:
 
                 # 데이터세팅
                 data = messageModule.set_data(stc_id, stc_name, '상승예상 종목확인!!')
 
                 # 결과저장
-                sql = "insert into stock_search.stock_captured (capture_dt, stc_id ,capture_tcd ) " \
-                      "values( '%s','%s','01')" % (today, stc_id)
+                sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd ) " \
+                      "values('%s', '%s', '%d', '01')" % (now_time, stc_id, price)
                 db_class.execute(sql)
                 db_class.commit()
 

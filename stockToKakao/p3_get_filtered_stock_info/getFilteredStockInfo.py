@@ -20,8 +20,8 @@ def update_stock_fin_info(db_class, stc_id):
 
     # DB Update
     try:
-        sql = "UPDATE stock_search.stock_basic SET num_of_circulation = '%d', filter_yn = '%s'" \
-              "WHERE stc_id = '%s'" % (num_of_circulation, 'Y', stc_id)
+        sql = "UPDATE stock_search.stock_basic SET num_of_circulation = '%d', filter_cd = '%s'" \
+              "WHERE stc_id = '%s'" % (num_of_circulation, '01', stc_id)
         db_class.execute(sql)
         db_class.commit()
         return
@@ -57,7 +57,7 @@ def main_process():
     db_class = dbModule.Database()
 
     # # 초기화
-    # sql = "UPDATE stock_search.stock_basic SET filter_yn = 'N'"
+    # sql = "UPDATE stock_search.stock_basic SET filter_cd = '00'"
     # db_class.execute(sql)
     # db_class.commit()
 

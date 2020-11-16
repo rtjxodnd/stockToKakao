@@ -110,10 +110,10 @@ def stock_values_insert_to_db(insert_value):
               "face_price, " \
               "tot_value, " \
               "deal_amt, " \
-              "filter_yn) " \
+              "filter_cd) " \
               "VALUES('%s', '%s', '%s', '%d', '%d', '%d', '%d', '%s')" % \
               (stc_id, stc_name, stc_dvsn,
-               now_price, face_price, tot_value, deal_amt, 'N')
+               now_price, face_price, tot_value, deal_amt, '00')
         db_class.execute(sql)
         db_class.commit()
         return
