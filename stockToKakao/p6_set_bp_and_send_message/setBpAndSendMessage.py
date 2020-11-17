@@ -125,6 +125,9 @@ def sub_process_02():
 
 
 def main_process():
+    # 시작시간
+    start_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+
     # 현재시간
     nowTime = timeModule.get_server_time()
 
@@ -133,6 +136,14 @@ def main_process():
         sub_process_01()
     else:
         sub_process_02()
+
+    # 종료 시간
+    end_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+
+    # 종료메시지
+    print("저항선 돌파 종목 정보 송신 완료")
+    print("시작시각: ", start_time)
+    print("종료시각: ", end_time)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 import logging
 import sys
 import os
+from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 from stockToKakao.commonModule import dbModule
@@ -53,6 +54,9 @@ def update_stock_cap_info(db_class, stc_id):
 
 
 def main_process():
+    # 시작시간
+    start_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+
     # db 모듈선언
     db_class = dbModule.Database()
 
@@ -119,6 +123,14 @@ def main_process():
     # 종료 메시지
     db_class.commit()
     print("우선주 상장 주식수 정보 획득완료!!!!")
+
+    # 종료 시간
+    end_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+
+    # 최종 종료메시지
+    print("전체 프로세스 종료!!!")
+    print("시작시각: ", start_time)
+    print("종료시각: ", end_time)
 
 
 if __name__ == "__main__":

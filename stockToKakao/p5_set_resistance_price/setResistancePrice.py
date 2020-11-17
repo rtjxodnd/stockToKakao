@@ -1,6 +1,7 @@
 import sys
 import os
 import logging
+from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 from stockToKakao.commonModule import dbModule, calcModule
@@ -13,6 +14,8 @@ logger = logging.getLogger(__name__)
 
 
 def main_process(term):
+    # 시작시간
+    start_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
 
     # DB 모듈선언
     db_class = dbModule.Database()
@@ -70,8 +73,16 @@ def main_process(term):
             logger.error("ERROR!!!!: main_process")
             logger.error(ex)
 
+    # commit
     db_class.commit()
+
+    # 종료 시간
+    end_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+
+    # 종료메시지
     print("지지선 저항선 설정 완료")
+    print("시작시각: ", start_time)
+    print("종료시각: ", end_time)
 
 
 if __name__ == "__main__":

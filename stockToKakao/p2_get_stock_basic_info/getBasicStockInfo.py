@@ -2,6 +2,7 @@
 import logging
 import sys
 import os
+from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 from stockToKakao.commonModule import dbModule
@@ -149,6 +150,8 @@ def preferred_stock_values_update():
 # Main 처리: 주식 기본 테이블삭제 후 data 읽어서 주식기본 테이블에 저장한다.
 ###########################################################
 def main_process():
+    # 시작시간
+    start_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
 
     # 기존자료 삭제
     stock_values_delete()
@@ -184,8 +187,13 @@ def main_process():
     # 우선주여부 update
     preferred_stock_values_update()
 
-    # 종료 메시지
-    print("종목정보 수신완료!!!!")
+    # 종료 시간
+    end_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+
+    # 종료메시지
+    print("종목정보 수신종료!!!")
+    print("시작시각: ", start_time)
+    print("종료시각: ", end_time)
 
 
 if __name__ == "__main__":

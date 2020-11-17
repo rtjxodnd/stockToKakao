@@ -14,6 +14,9 @@ logger = logging.getLogger(__name__)
 
 
 def main_process():
+    # 시작시간
+    start_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+
     # 헤더세팅
     headers = messageModule.set_headers()
 
@@ -60,8 +63,16 @@ def main_process():
             logger.error("ERROR!!!!: main_process")
             logger.error(ex)
 
+    # commit
     db_class.commit()
+
+    # 종료 시간
+    end_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+
+    # 종료메시지
     print("상승예상 종목 메시지 송신 완료")
+    print("시작시각: ", start_time)
+    print("종료시각: ", end_time)
 
 
 if __name__ == "__main__":
