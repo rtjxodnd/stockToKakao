@@ -20,7 +20,8 @@ def index():
 @app.route('/oauth')
 def oauth():
     code = str(request.args.get('code'))
-    resToken = getAccessToken("3395ba66a46252d72dd58bbdeae94bd2", str(code))
+    # resToken = getAccessToken("3395ba66a46252d72dd58bbdeae94bd2", str(code))
+    resToken = getAccessToken("c1889aaa44f7ace2b5e149d9e6c1433d", str(code))
 
     db_class = dbModule.Database()
     sql = "DELETE from stock_search.kakao_token"

@@ -66,7 +66,7 @@ def sub_process_01():
                 data = messageModule.set_data(stc_id, stc_name, "전고점 돌파!!!")
                 # 메시지송신
                 messageModule.send_message(headers, data)
-                
+
                 # 결과저장
                 sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd ) " \
                       "values('%s', '%s', '%d', '02')" % (now_time, stc_id, now_price)
