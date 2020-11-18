@@ -4,7 +4,7 @@ import logging
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
-from stockToKakao.commonModule import dbModule, messageModule, timeModule
+from stockToKakao.commonModule import dbModule, messageModule
 from stockToKakao.p6_set_bp_and_send_message.crawler.crawlStockNowPrice import getStockNowPrice
 from stockToKakao.p6_set_bp_and_send_message.bizLogic.calBfNxResisPrice import cal_before_next_price
 from stockToKakao.p6_set_bp_and_send_message.bizLogic.increaseYn import increase_yn
