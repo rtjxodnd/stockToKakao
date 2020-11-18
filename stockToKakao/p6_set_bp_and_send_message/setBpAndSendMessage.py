@@ -57,11 +57,6 @@ def sub_process_01():
                       "where stc_id = '%s'" % \
                       (now_price, new_price_value['before_price'], new_price_value['next_price'], stc_id)
                 db_class.execute(sql)
-
-                # 결과저장
-                sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd ) " \
-                      "values('%s', '%s', '%d', '02')" % (now_time, stc_id, now_price)
-                db_class.execute(sql)
                 db_class.commit()
 
             # 현재가가 다음 전고점보다 높아졌으면서 거래량 및 가격 기준에 부합하는 경우
@@ -71,6 +66,13 @@ def sub_process_01():
                 data = messageModule.set_data(stc_id, stc_name, "전고점 돌파!!!")
                 # 메시지송신
                 messageModule.send_message(headers, data)
+                
+                # 결과저장
+                sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd ) " \
+                      "values('%s', '%s', '%d', '02')" % (now_time, stc_id, now_price)
+                db_class.execute(sql)
+                db_class.commit()
+
         except Exception as ex:
             logger.error("ERROR!!!!: sub_process_01")
             logger.error(ex)
