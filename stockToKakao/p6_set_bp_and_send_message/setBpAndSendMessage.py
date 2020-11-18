@@ -129,10 +129,11 @@ def main_process():
     start_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
 
     # 현재시간
-    nowTime = timeModule.get_server_time()
+    now_time = timeModule.get_server_time()
+    print(now_time)
 
     # 시간대별 다른 프로세스 수행
-    if '090000' <= nowTime < '160000':
+    if '090000' <= now_time < '160000':
         sub_process_01()
     else:
         sub_process_02()
