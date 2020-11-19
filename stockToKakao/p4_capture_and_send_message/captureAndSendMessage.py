@@ -33,7 +33,7 @@ def main_process():
     db_class.commit()
 
     # 대상건 조회
-    sql = "SELECT stc_id, stc_name from stock_search.stock_basic where substring(bin(filter_bcd), -1, 1) = 1"
+    sql = "SELECT stc_id, stc_name from stock_search.stock_basic where substring(bin(filter_bcd), -1, 1) = '1'"
     rows = db_class.executeAll(sql)
 
     # 친구목록수신
