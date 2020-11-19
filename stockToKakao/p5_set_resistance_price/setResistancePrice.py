@@ -21,7 +21,7 @@ def main_process(term):
     db_class = dbModule.Database()
 
     # 대상건 조회
-    sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where bin(filter_bcd) = 1"
+    sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where substring(bin(filter_bcd), -1, 1) = 1"
     # sql = "SELECT stc_id, stc_dvsn, now_price from stock_search.stock_basic where stc_id = '005930'"
     rows = db_class.executeAll(sql)
 

@@ -98,7 +98,7 @@ def sub_process_02():
     # 대상건 조회
     sql = "SELECT stc_id, resistance_price " \
           "FROM stock_search.stock_basic " \
-          "WHERE bin(filter_bcd) = 1 AND resistance_price <> ''"
+          "WHERE substring(bin(filter_bcd), -1, 1) = 1 AND resistance_price <> ''"
     rows = db_class.executeAll(sql)
 
     # 조회된 건수 바탕으로 data 세팅
