@@ -21,8 +21,8 @@ def update_stock_fin_info(db_class, stc_id):
 
     # DB Update
     try:
-        sql = "UPDATE stock_search.stock_basic SET num_of_circulation = '%d', filter_bcd = '%d'" \
-              "WHERE stc_id = '%s'" % (num_of_circulation, 1, stc_id)
+        sql = "UPDATE stock_search.stock_basic SET num_of_circulation = '%d', filter_bcd = filter_bcd | b'%s'" \
+              "WHERE stc_id = '%s'" % (num_of_circulation, '001', stc_id)
         db_class.execute(sql)
         db_class.commit()
         return
