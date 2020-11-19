@@ -36,6 +36,9 @@ def main_process():
     sql = "SELECT stc_id, stc_name from stock_search.stock_basic where filter_cd = '01'"
     rows = db_class.executeAll(sql)
 
+    # 친구목록수신
+    uuids = messageModule.get_friends(headers)
+
     # 조회된 건수 바탕으로 판별 및 송신
     for row in rows:
         try:
@@ -48,7 +51,7 @@ def main_process():
             if price > 0:
 
                 # 데이터세팅
-                data = messageModule.set_data(stc_id, stc_name, '상승예상 종목확인!!')
+                data = messageModule.set_data(stc_id, stc_name, '상승예상 종목확인!!', uuids)
 
                 # 결과저장
                 sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd ) " \
@@ -57,7 +60,7 @@ def main_process():
                 db_class.commit()
 
                 # 메시지송신
-                messageModule.send_message(headers, data)
+                messageModule.send_message_to_friends(headers, data)
 
         except Exception as ex:
             logger.error("ERROR!!!!: main_process")

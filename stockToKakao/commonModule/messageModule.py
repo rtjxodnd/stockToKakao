@@ -18,8 +18,9 @@ def set_headers():
 
 
 # 데이터세팅
-def set_data(stc_id, stc_name, text):
+def set_data(stc_id, stc_name, text, uuids):
     data = {
+        "receiver_uuids": json.dumps(uuids),
         "template_object": json.dumps({"object_type": "text",
                                        "text": text + "\n "
                                                "[" + stc_name + "]\n"
@@ -34,11 +35,35 @@ def set_data(stc_id, stc_name, text):
     return data
 
 
-# 메시지송신
-def send_message(headers, data):
+# 친구목록수신
+def get_friends(headers):
+    url = "https://kapi.kakao.com/v1/api/talk/friends"
+    result = json.loads(requests.get(url, headers=headers).text)
+    uuids = []
+    friends_list = result.get("elements")
+    for friend in friends_list:
+        uuids.append(friend['uuid'])
+    return uuids
+
+
+# 나에게 메시지송신
+def send_message_to_myself(headers, data):
     url = "https://kapi.kakao.com/v2/api/talk/memo/default/send"
     response = requests.post(url, headers=headers, data=data)
     if response.json().get('result_code') == 0:
-        print('메시지를 성공적으로 보냈습니다.')
+        print('나에게 메시지를 성공적으로 보냈습니다.')
     else:
-        print('메시지를 성공적으로 보내지 못했습니다. 오류메시지 : ' + str(response.json()))
+        print('나에게 메시지를 성공적으로 보내지 못했습니다. 오류메시지 : ' + str(response.json()))
+
+
+# 친구에게 메시지송신
+def send_message_to_friends(headers, data):
+    url = "https://kapi.kakao.com/v1/api/talk/friends/message/default/send"
+    response = requests.post(url, headers=headers, data=data)
+
+    if response.json().get('code') is None:
+        print('친구에게 메시지를 성공적으로 보냈습니다.')
+    else:
+        print('친구에게 메시지를 성공적으로 보내지 못했습니다. 오류메시지 : ' + str(response.json()))
+        print('나에게 메시지 보내기 수행')
+        send_message_to_myself(headers, data)

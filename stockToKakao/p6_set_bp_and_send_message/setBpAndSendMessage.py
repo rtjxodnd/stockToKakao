@@ -29,6 +29,9 @@ def sub_process_01():
           "from stock_search.stock_breakthrough a, stock_search.stock_basic b where a.stc_id = b.stc_id "
     rows = db_class.executeAll(sql)
 
+    # 친구목록수신
+    uuids = messageModule.get_friends(headers)
+
     # 조회된 건수 바탕으로 data 세팅 및 메시지 송신
     for row in rows:
         try:
@@ -63,9 +66,9 @@ def sub_process_01():
             # 메시지 송신
             if now_price > next_price and increase_yn(stc_id):
                 # 데이터세팅
-                data = messageModule.set_data(stc_id, stc_name, "전고점 돌파!!!")
+                data = messageModule.set_data(stc_id, stc_name, "전고점 돌파!!!", uuids)
                 # 메시지송신
-                messageModule.send_message(headers, data)
+                messageModule.send_message_to_friends(headers, data)
 
                 # 결과저장
                 sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd ) " \
