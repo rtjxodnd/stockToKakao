@@ -47,6 +47,9 @@ def sub_process_01():
             # 현재가
             now_price = int(getStockNowPrice(stc_id)['now_price'])
 
+            # 고가
+            high_price = int(getStockNowPrice(stc_id)['high_price'])
+
             # 현재가가 이전 전고점보다 낮아졌거나 다음 전고점보다 높아진 경우
             # 전고점정보 확인 설정 및 DB 저장
             if now_price < before_price or now_price > next_price:
@@ -62,9 +65,9 @@ def sub_process_01():
                 db_class.execute(sql)
                 db_class.commit()
 
-            # 현재가가 다음 전고점보다 높아졌으면서 거래량 및 가격 기준에 부합하는 경우
+            # 현재가가 다음 전고점보다 높아졌으면서 현재가가 당일 고가보다 크거나 같고 거래량 및 가격 기준에 부합하는 경우
             # 메시지 송신
-            if now_price > next_price and increase_yn(stc_id):
+            if now_price > next_price and now_price >= high_price and increase_yn(stc_id):
                 # 데이터세팅
                 data = messageModule.set_data(stc_id, stc_name, "전고점 돌파!!!", uuids)
                 # 메시지송신

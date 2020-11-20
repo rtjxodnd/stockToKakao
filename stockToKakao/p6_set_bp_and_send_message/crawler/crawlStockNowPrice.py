@@ -22,11 +22,21 @@ def getStockNowPrice(stc_id):
         # 현재가정보
         contentInfo = bs_obj.find("div", {"id": "content"}).find("p", {"class": "no_today"}).find("em")
 
+        # 요약정보
+        highInfo = bs_obj.find("table", {"class": "no_info"}).find_all("tr")[0].find_all("td")[1]
+        lowInfo = bs_obj.find("table", {"class": "no_info"}).find_all("tr")[1].find_all("td")[1]
+
         # 현재가
         now_price = contentInfo.find_all("span")[0].text.replace(",", "")
 
+        # 고가
+        high_price = highInfo.find_all("span", {"class": "blind"})[0].text.replace(",", "")
+
+        # 저가
+        low_price = lowInfo.find_all("span", {"class": "blind"})[0].text.replace(",", "")
+
         # 필요 데이터 추출
-        result_value = {"now_price": now_price}
+        result_value = {"now_price": now_price, "high_price": high_price, "low_price": low_price}
 
         return result_value
     except Exception as ex:
