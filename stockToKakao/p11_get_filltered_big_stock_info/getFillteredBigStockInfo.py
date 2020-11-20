@@ -57,7 +57,7 @@ def main_process(input_stc_id = None):
     for i, row in enumerate(rows):
         try:
             if i % 10 == 0:
-                print("판단중(우선주/스펙주제외).... 전체:", len(rows), "건, 현재: ", i, "건")
+                print("대형주 우량여부 판단중(우선주/스펙주제외).... 전체:", len(rows), "건, 현재: ", i, "건")
 
             # 판별대상 데이터
             stc_id = row['stc_id']

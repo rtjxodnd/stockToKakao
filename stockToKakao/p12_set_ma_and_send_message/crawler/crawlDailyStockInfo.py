@@ -3,18 +3,17 @@
 # 필요라이브러리 import
 import requests
 from bs4 import BeautifulSoup
-import logging
+import pandas as pd
+import math
+import traceback
 
 
 # 공통변수
 FINANCE_URL = "https://finance.naver.com/item/sise_day.nhn?code="
 
 
-# 해당 종목의 3년전 page 추출
-def get_last_page_of_stock(stc_id):
-    # 로거
-    logger = logging.getLogger(__name__)
-
+# 해당 종목의 마지막 page 확인
+def get_last_page_of_stock(stc_id, avg_term=5):
     try:
         url = FINANCE_URL+stc_id
         page_call_result = requests.get(url)
@@ -29,14 +28,15 @@ def get_last_page_of_stock(stc_id):
             href = td_pg_rr.find("a")["href"]
             last_page = int(href.split("=")[2])
 
-        # 대략 3년전 : 74 page, 그 이후 데이터만 확인
-        if last_page > 74:
-            last_page = 74
+        # 불푤요한 크롤링 방지위해서 원하는 기간만큼만 마지막 페이지를 설정한다.
+        # 한 페이지에 10개의 data 가 있다.
+        if last_page > avg_term/10:
+            last_page = math.ceil(avg_term/10)
 
         return last_page
+
     except Exception as ex:
-        logger.error("ERROR!!!!: get_last_page_of_stock")
-        logger.error(ex)
+        traceback.print_exc()
 
 
 # 한건의 data 추출
@@ -64,57 +64,34 @@ def find_stock_values_of_one(tds):
 
 # 한개 page 처리
 def find_stock_values_of_one_page(stock_id, page=1):
-    # 로거
-    logger = logging.getLogger(__name__)
-
     try:
         # 데이터 탐색
         url = FINANCE_URL+stock_id+"&page="+str(page)
         page_call_result = requests.get(url)
-        bs_obj = BeautifulSoup(page_call_result.content, "html.parser")
-        # driver = set_page_driver(url)
-        # bs_obj = BeautifulSoup(driver.page_source, 'html.parser')
-        # driver.close()
-
-        trs = bs_obj.find_all("tr", {"onmouseover": "mouseOver(this)"})
-
-        # 해당 page 의 last order 구하기(보통 한페이지당 10개의 일자 데이터가 있다. 그러나 마지막 데이터는 그보다 적음)
-        last_order = -1
-        for order in range(0, 10):
-            tr = trs[order]
-            tds = tr.find_all("td", {"align": "center"})
-            if len(tds[0].text.replace(".", "").replace(" ", "")) == 0:
-                break
-            last_order = last_order + 1
-
-        # 필요 데이터 추출
-        for order in range(0, last_order):
-            tr = trs[order]
-            tds = tr.find_all("td")
-            result_value = find_stock_values_of_one(tds)
-
-            if result_value["over10billioYn"] == "Y":
-                break
+        bs_obj = BeautifulSoup(page_call_result.text, 'lxml')
+        _df = pd.read_html(str(bs_obj.find("table")), header=0)[0]
+        _df = _df.dropna()
 
         # return
-        return result_value
+        return _df
     except Exception as ex:
-        logger.error("ERROR!!!!: find_stock_values_of_one_page")
-        logger.error(ex)
+        traceback.print_exc()
 
 
 # Main 처리: 마지막페이지를 구하고 첫 페이지부터 마지막페이지까지 크롤링
-def main_process(stc_id):
+def crawl_daily_stock_info(stc_id, avg_term):
+    # 결과 data frame 초기화
+    result_value = None
 
-    last_page = get_last_page_of_stock(stc_id)
+    # 마지막 페이지
+    last_page = get_last_page_of_stock(stc_id, avg_term)
+
     for page in range(1, last_page+1):
-        result_value = find_stock_values_of_one_page(stc_id, page)
-
-        if result_value["over10billioYn"] == "Y":
-            break
+        df = find_stock_values_of_one_page(stc_id, page)
+        result_value = pd.concat([result_value, df])
 
     return result_value
 
 
 if __name__ == "__main__":
-    main_process('20190625')
+    print(crawl_daily_stock_info('005930', 360))

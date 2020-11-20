@@ -109,9 +109,7 @@ def find_stock_values_of_one_page(stock_id, page=1):
         logger.error(ex)
 
 
-###########################################################
-# Main 처리: 주식 기본 테이블에서 data 읽어서 이를 처리한다.
-###########################################################
+# Main 처리: 마지막페이지를 구하고 첫 페이지부터 마지막페이지까지 크롤링
 def main_process(stc_id):
 
     last_page = get_last_page_of_stock(stc_id)
