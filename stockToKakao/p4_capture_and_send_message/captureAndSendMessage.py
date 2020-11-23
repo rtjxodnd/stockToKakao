@@ -54,8 +54,8 @@ def main_process():
                 data = messageModule.set_data(stc_id, stc_name, '상승예상 종목확인!!', uuids)
 
                 # 결과저장
-                sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd ) " \
-                      "values('%s', '%s', '%d', '01')" % (now_time, stc_id, price)
+                sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd, msg ) " \
+                      "values('%s', '%s', '%d', '01', '%s')" % (now_time, stc_id, price, '상승예상 종목확인!!')
                 db_class.execute(sql)
                 db_class.commit()
 

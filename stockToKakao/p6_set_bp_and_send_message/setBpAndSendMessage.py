@@ -74,8 +74,8 @@ def sub_process_01():
                 messageModule.send_message_to_friends(headers, data)
 
                 # 결과저장
-                sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd ) " \
-                      "values('%s', '%s', '%d', '02')" % (now_time, stc_id, now_price)
+                sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd, msg ) " \
+                      "values('%s', '%s', '%d', '02', '%s')" % (now_time, stc_id, now_price, "전고점 돌파!!!")
                 db_class.execute(sql)
                 db_class.commit()
 

@@ -65,38 +65,132 @@ def sub_process_01(in_stc_id=None):
             db_class.commit()
 
             # 메시지조합
-            msg = ""
+            yn_now = False
+            yn_5 = False
+            yn_20 = False
+            yn_60 = False
+            yn_120 = False
 
-            # 5일선돌파
+            msg_temp = ""
+            msg_now = ""
+            msg_5 = ""
+            msg_20 = ""
+            msg_60 = ""
+            msg_120 = ""
+            msg_final = ""
+
+            # 현재가 5일선돌파
             if old_now_price <= old_ma5 and now_price > ma5:
-                msg+"5일선 "
+                msg_temp = msg_temp+"5 "
+                yn_now = True
 
-            # 20일선돌파
+            # 현재가 20일선돌파
             if old_now_price <= old_ma20 and now_price > ma20:
-                msg+"20일선 "
+                msg_temp = msg_temp+"20 "
+                yn_now = True
 
-            # 60일선돌파
+            # 현재가 60일선돌파
             if old_now_price <= old_ma60 and now_price > ma60:
-                msg+"60일선 "
+                msg_temp = msg_temp+"60 "
+                yn_now = True
 
-            # 120일선돌파
+            # 현재가 120일선돌파
             if old_now_price <= old_ma120 and now_price > ma120:
-                msg+"120일선 "
+                msg_temp = msg_temp+"120 "
+                yn_now = True
 
-            # 240일선돌파
+            # 현재가 240일선돌파
             if old_now_price <= old_ma240 and now_price > ma240:
-                msg+"240일선 "
+                msg_temp = msg_temp+"240 "
+                yn_now = True
+
+            # 메시지 조립
+            if yn_now:
+                msg_now = "현재가: " + msg_temp + "일선 돌파!!! \n"
+            msg_temp = ""
+
+            # 5일선 20일선돌파
+            if old_ma5 <= old_ma20 and ma5 > ma20:
+                msg_temp = msg_temp+"20 "
+                yn_5 = True
+
+            # 5일선 60일선돌파
+            if old_ma5 <= old_ma60 and ma5 > ma60:
+                msg_temp = msg_temp+"60 "
+                yn_5 = True
+
+            # 5일선 120일선돌파
+            if old_ma5 <= old_ma120 and ma5 > ma120:
+                msg_temp = msg_temp+"120 "
+                yn_5 = True
+
+            # 5일선 240일선돌파
+            if old_ma5 <= old_ma240 and ma5 > ma240:
+                msg_temp = msg_temp+"240 "
+                yn_5 = True
+
+            # 메시지 조립
+            if yn_5:
+                msg_5 = "5일선: " + msg_temp + "일선 돌파!!! \n"
+            msg_temp = ""
+
+            # 20일선 60일선돌파
+            if old_ma20 <= old_ma60 and ma20 > ma60:
+                msg_temp = msg_temp+"60 "
+                yn_20 = True
+
+            # 20일선 120일선돌파
+            if old_ma20 <= old_ma120 and ma20 > ma120:
+                msg_temp = msg_temp+"120 "
+                yn_20 = True
+
+            # 20일선 240일선돌파
+            if old_ma20 <= old_ma240 and ma20 > ma240:
+                msg_temp = msg_temp+"240 "
+                yn_20 = True
+
+            # 메시지 조립
+            if yn_20:
+                msg_20 = "20일선: " + msg_temp + "일선 돌파!!! \n"
+            msg_temp = ""
+
+            # 60일선 120일선돌파
+            if old_ma60 <= old_ma120 and ma60 > ma120:
+                msg_temp = msg_temp+"120 "
+                yn_60 = True
+
+            # 60일선 240일선돌파
+            if old_ma60 <= old_ma240 and ma60 > ma240:
+                msg_temp = msg_temp+"240 "
+                yn_60 = True
+
+            # 메시지 조립
+            if yn_60:
+                msg_60 = "60일선: " + msg_temp + "일선 돌파!!! \n"
+            msg_temp = ""
+
+            # 120일선 240일선돌파
+            if old_ma120 <= old_ma240 and ma120 > ma240:
+                msg_temp = msg_temp+"240 "
+                yn_120 = True
+
+            # 메시지 조립
+            if yn_120:
+                msg_120 = "120일선: " + msg_temp + "일선 돌파!!! \n"
+
+            # 최종 메시지 조립
+            msg_final = msg_now+msg_5+msg_20+msg_60+msg_120
 
             # 메시지 송신
-            if msg != "":
+            if yn_now or yn_5 or yn_20 or yn_60 or yn_120:
                 # 데이터세팅
-                data = messageModule.set_data(stc_id, stc_name, msg+"돌파!!!", uuids)
+                data = messageModule.set_data(stc_id, stc_name, msg_final, uuids)
                 # 메시지송신
                 messageModule.send_message_to_friends(headers, data)
 
                 # 결과저장
-                sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd ) " \
-                      "values('%s', '%s', '%d', '03')" % (now_time, stc_id, now_price)
+                sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd, msg ) " \
+                      "values('%s', '%s', '%d', '03', '%s')" % (now_time, stc_id, now_price, msg_final)
                 db_class.execute(sql)
                 db_class.commit()
 
