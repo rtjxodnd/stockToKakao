@@ -104,7 +104,7 @@ def sub_process_01(in_stc_id=None):
             traceback.print_exc()
 
     db_class.commit()
-    print("전고점 돌파 메시지 송신 완료")
+    print("이평선 돌파 메시지 송신 완료")
     return
 
 
