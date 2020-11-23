@@ -77,7 +77,6 @@ def sub_process_01(in_stc_id=None):
             msg_20 = ""
             msg_60 = ""
             msg_120 = ""
-            msg_final = ""
 
             # 현재가 5일선돌파
             if old_now_price <= old_ma5 and now_price > ma5:
@@ -106,7 +105,7 @@ def sub_process_01(in_stc_id=None):
 
             # 메시지 조립
             if yn_now:
-                msg_now = "현재가: " + msg_temp + "일선 돌파!!! \n"
+                msg_now = "현재가: " + msg_temp + "일선 돌파! \n"
             msg_temp = ""
 
             # 5일선 20일선돌파
@@ -131,7 +130,7 @@ def sub_process_01(in_stc_id=None):
 
             # 메시지 조립
             if yn_5:
-                msg_5 = "5일선: " + msg_temp + "일선 돌파!!! \n"
+                msg_5 = "5일선: " + msg_temp + "일선 돌파! \n"
             msg_temp = ""
 
             # 20일선 60일선돌파
@@ -151,7 +150,7 @@ def sub_process_01(in_stc_id=None):
 
             # 메시지 조립
             if yn_20:
-                msg_20 = "20일선: " + msg_temp + "일선 돌파!!! \n"
+                msg_20 = "20일선: " + msg_temp + "일선 돌파! \n"
             msg_temp = ""
 
             # 60일선 120일선돌파
@@ -166,7 +165,7 @@ def sub_process_01(in_stc_id=None):
 
             # 메시지 조립
             if yn_60:
-                msg_60 = "60일선: " + msg_temp + "일선 돌파!!! \n"
+                msg_60 = "60일선: " + msg_temp + "일선 돌파! \n"
             msg_temp = ""
 
             # 120일선 240일선돌파
@@ -176,7 +175,7 @@ def sub_process_01(in_stc_id=None):
 
             # 메시지 조립
             if yn_120:
-                msg_120 = "120일선: " + msg_temp + "일선 돌파!!! \n"
+                msg_120 = "120일선: " + msg_temp + "일선 돌파! \n"
 
             # 최종 메시지 조립
             msg_final = msg_now+msg_5+msg_20+msg_60+msg_120
