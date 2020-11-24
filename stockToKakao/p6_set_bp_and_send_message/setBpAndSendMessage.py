@@ -71,7 +71,7 @@ def sub_process_01():
                 # 데이터세팅
                 data = messageModule.set_data(stc_id, stc_name, "전고점 돌파!!!", uuids)
                 # 메시지송신
-                messageModule.send_message_to_friends(headers, data)
+                messageModule.send_message_to_myself(headers, data)
 
                 # 결과저장
                 sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd, msg ) " \

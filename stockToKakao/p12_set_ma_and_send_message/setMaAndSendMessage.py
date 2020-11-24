@@ -179,13 +179,15 @@ def sub_process_01(in_stc_id=None):
 
             # 최종 메시지 조립
             msg_final = msg_now+msg_5+msg_20+msg_60+msg_120
+            msg_final = msg_20
 
             # 메시지 송신
-            if yn_now or yn_5 or yn_20 or yn_60 or yn_120:
-                # # 데이터세팅
-                # data = messageModule.set_data(stc_id, stc_name, msg_final, uuids)
-                # # 메시지송신
-                # messageModule.send_message_to_friends(headers, data)
+            # if yn_now or yn_5 or yn_20 or yn_60 or yn_120:
+            if yn_20:
+                # 데이터세팅
+                data = messageModule.set_data(stc_id, stc_name, msg_final, uuids)
+                # 메시지송신
+                messageModule.send_message_to_friends(headers, data)
 
                 # 결과저장
                 sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd, msg ) " \
