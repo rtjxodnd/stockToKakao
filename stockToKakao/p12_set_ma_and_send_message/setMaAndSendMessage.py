@@ -182,10 +182,10 @@ def sub_process_01(in_stc_id=None):
 
             # 메시지 송신
             if yn_now or yn_5 or yn_20 or yn_60 or yn_120:
-                # 데이터세팅
-                data = messageModule.set_data(stc_id, stc_name, msg_final, uuids)
-                # 메시지송신
-                messageModule.send_message_to_friends(headers, data)
+                # # 데이터세팅
+                # data = messageModule.set_data(stc_id, stc_name, msg_final, uuids)
+                # # 메시지송신
+                # messageModule.send_message_to_friends(headers, data)
 
                 # 결과저장
                 sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd, msg ) " \
