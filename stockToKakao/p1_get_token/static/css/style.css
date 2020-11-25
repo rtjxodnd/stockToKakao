@@ -1,5 +1,5 @@
 html,body{
-  height:100%;
+  height:50%;
 }
 body{
   text-align:center;
@@ -15,7 +15,7 @@ button{
   color:#3A1D1D;
   border:none;
   position:relative;
-  height:200px;
+  height:100px;
   font-size:1.6em;
   padding:0 2em;
   cursor:pointer;
@@ -45,4 +45,9 @@ button:after{
 button:hover:before,button:hover:after{
   width:100%;
   transition:800ms ease all;
+}
+
+t1{
+    color:#AE0E36;
+    font-weight: bold;
 }
