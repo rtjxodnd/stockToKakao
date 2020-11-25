@@ -133,20 +133,20 @@ def sub_process_01(in_stc_id=None):
                 msg_5 = "5일선: " + msg_temp + "일선 돌파! \n"
             msg_temp = ""
 
-            # 20일선 60일선돌파
-            if old_ma20 <= old_ma60 and ma20 > ma60:
-                msg_temp = msg_temp+"60 "
-                yn_20 = True
+            # # 20일선 60일선돌파
+            # if old_ma20 <= old_ma60 and ma20 > ma60:
+            #     msg_temp = msg_temp+"60 "
+            #     yn_20 = True
 
             # 20일선 120일선돌파
             if old_ma20 <= old_ma120 and ma20 > ma120:
                 msg_temp = msg_temp+"120 "
                 yn_20 = True
 
-            # 20일선 240일선돌파
-            if old_ma20 <= old_ma240 and ma20 > ma240:
-                msg_temp = msg_temp+"240 "
-                yn_20 = True
+            # # 20일선 240일선돌파
+            # if old_ma20 <= old_ma240 and ma20 > ma240:
+            #     msg_temp = msg_temp+"240 "
+            #     yn_20 = True
 
             # 메시지 조립
             if yn_20:
