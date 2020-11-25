@@ -41,7 +41,9 @@ def get_friends(headers):
     result = json.loads(requests.get(url, headers=headers).text)
     uuids = []
     friends_list = result.get("elements")
+    print("수신 친구 목록")
     for friend in friends_list:
+        print(friend['profile_nickname'], friend['uuid'])
         uuids.append(friend['uuid'])
     return uuids
 
