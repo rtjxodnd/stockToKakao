@@ -5,7 +5,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
-from stockToKakao.commonModule import dbModule, ipModule
+from stockToKakao.commonModule import dbModule, ipModule, messageModule
 
 
 app = Flask(__name__)
@@ -20,13 +20,19 @@ def index():
 @app.route('/oauth')
 def oauth():
     code = str(request.args.get('code'))
-    # resToken = getAccessToken("3395ba66a46252d72dd58bbdeae94bd2", str(code))
     resToken = getAccessToken("c1889aaa44f7ace2b5e149d9e6c1433d", str(code))
+    result = getUserInfo(resToken)
 
+    # owner가 아니면 리턴
+    if result['id'] != 1535632259:
+        return '로그인 및 약관동의 완료!!'
+
+    # 기존 owner 계정 토큰 제거
     db_class = dbModule.Database()
     sql = "DELETE from stock_search.kakao_token"
     db_class.execute(sql)
 
+    # 신규 owner 계정 토큰 저장
     sql = "INSERT INTO stock_search.kakao_token(" \
           "code, " \
           "access_token, " \
@@ -52,7 +58,8 @@ def oauth():
            '<br/>refresh_token_expires_in=' + str(resToken['refresh_token_expires_in'])
 
 
-def getAccessToken(clientId, code):  # 세션 코드값 code 를 이용해서 ACESS TOKEN과 REFRESH TOKEN을 발급 받음
+# 세션 코드값 code 를 이용해서 ACESS TOKEN과 REFRESH TOKEN을 발급 받음
+def getAccessToken(clientId, code):
     ip = ipModule.get_ip()['ip']
     url = "https://kauth.kakao.com/oauth/token"
     payload = "grant_type=authorization_code"
@@ -65,6 +72,15 @@ def getAccessToken(clientId, code):  # 세션 코드값 code 를 이용해서 AC
     reponse = requests.request("POST", url, data=payload, headers=headers)
     access_token = json.loads(((reponse.text).encode('utf-8')))
     return access_token
+
+
+# ACESS TOKEN 이용하여 로그인한 사용자 ID 식별
+def getUserInfo(resToken):
+    url = "https://kapi.kakao.com/v2/user/me"
+    headers = {"Authorization": "Bearer " + str(resToken['access_token'])}
+
+    result = json.loads(requests.get(url, headers=headers).text)
+    return result
 
 
 if __name__ == '__main__':
