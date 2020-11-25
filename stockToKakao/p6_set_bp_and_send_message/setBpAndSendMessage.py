@@ -104,9 +104,15 @@ def sub_process_02():
           "WHERE resistance_price <> '' AND substring(bin(filter_bcd), -1, 1) = '1'"
     rows = db_class.executeAll(sql)
 
+    # 전체건수 확인
+    print("대상건수:", len(rows))
+
     # 조회된 건수 바탕으로 data 세팅
-    for row in rows:
+    for i, row in enumerate(rows):
         try:
+            if i % 10 == 0:
+                print("현재: ", i, "건 처리완료")
+
             # 대상 데이터
             stc_id = row['stc_id']
             resistance_price = row['resistance_price']
@@ -149,7 +155,6 @@ def main_process():
     end_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
 
     # 종료메시지
-    print("저항선 돌파 종목 정보 송신 완료")
     print("시작시각: ", start_time)
     print("종료시각: ", end_time)
 
