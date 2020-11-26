@@ -1,6 +1,6 @@
 import sys
 import os
-import logging
+import traceback
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
@@ -8,9 +8,6 @@ from stockToKakao.commonModule import dbModule, messageModule
 from stockToKakao.p6_set_bp_and_send_message.crawler.crawlStockNowPrice import getStockNowPrice
 from stockToKakao.p6_set_bp_and_send_message.bizLogic.calBfNxResisPrice import cal_before_next_price
 from stockToKakao.p6_set_bp_and_send_message.bizLogic.increaseYn import increase_yn
-
-# 로거
-logger = logging.getLogger(__name__)
 
 
 # 작업모드 1번: 전고점 돌파시 메시지 송신
@@ -80,8 +77,8 @@ def sub_process_01():
                 db_class.commit()
 
         except Exception as ex:
-            logger.error("ERROR!!!!: sub_process_01")
-            logger.error(ex)
+            print("ERROR!!!!: sub_process_01")
+            traceback.print_exc()
 
     db_class.commit()
     print("전고점 돌파 메시지 송신 완료")
@@ -131,8 +128,8 @@ def sub_process_02():
             db_class.execute(sql)
             db_class.commit()
         except Exception as ex:
-            logger.error("ERROR!!!!: sub_process_02")
-            logger.error(ex)
+            print("ERROR!!!!: sub_process_02")
+            traceback.print_exc()
 
     db_class.commit()
     print("전고점 재설정 완료")
