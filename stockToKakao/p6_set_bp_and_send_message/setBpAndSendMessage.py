@@ -127,6 +127,7 @@ def sub_process_02():
             sql = "insert into stock_search.stock_breakthrough (stc_id ,now_price, before_price, next_price) " \
                   "values( '%s','%d','%d','%d')" % \
                   (stc_id, now_price, new_price_value['before_price'], new_price_value['next_price'])
+            print(sql)
             db_class.execute(sql)
             db_class.commit()
         except Exception as ex:
