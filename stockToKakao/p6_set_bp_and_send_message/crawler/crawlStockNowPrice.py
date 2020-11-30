@@ -1,14 +1,11 @@
 from bs4 import BeautifulSoup
-import logging
+import traceback
 import requests
 from stockToKakao.chromedriver.setPageDriver import set_page_driver
 
 
 # 한건의 data 추출
 def getStockNowPrice(stc_id):
-    # 로거
-    logger = logging.getLogger(__name__)
-
     try:
         # 데이터 탐색
         url = "https://finance.naver.com/item/main.nhn?code=" + str(stc_id)
@@ -40,8 +37,8 @@ def getStockNowPrice(stc_id):
 
         return result_value
     except Exception as ex:
-        logger.error("ERROR!!!!: getStockNowPrice")
-        logger.error(ex)
+        print("ERROR!!!!: getStockNowPrice")
+        traceback.print_exc()
 
 
 if __name__ == '__main__':

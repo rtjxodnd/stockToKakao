@@ -10,6 +10,16 @@ source stock_test/bin/activate
 # 가상환경 중지
 deactivate
 
+# 로그폴더 이동
+cd /home/ubuntu/project_01/stockToKakao/logs
+
+# 가상환경 수행 부터 토큰획득 위한 플라스크 기동까지
+cd /home/ubuntu/
+source stock_test/bin/activate
+cd /home/ubuntu/project_01/stockToKakao/p1_get_token
+python3 getToken.py
+
+# 프로세스 유지
 Ctrl+Z 를 통해 파이썬 프로세스 중지
 $ bg : 백그라운드에서 프로세스 재 구동
 $ disown -h : 소유권 포기
