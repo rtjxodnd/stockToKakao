@@ -1,4 +1,4 @@
-# 종목 기본정보를 내려 받는다.
+# 종목 기본정보를 내려 받는다. 
 # 월~금 매일  16시
 59 15 * * 1-5 rm /home/ubuntu/project_01/stockToKakao/logs/log_02_stockInfo.log
 0 16 * * 1-5 /home/ubuntu/stock_test/bin/python3 /home/ubuntu/project_01/stockToKakao/p2_get_stock_basic_info/getBasicStockInfo.py >> /home/ubuntu/project_01/stockToKakao/logs/log_02_stockInfo.log
@@ -24,14 +24,14 @@
 50 16 * * 1-5 /home/ubuntu/stock_test/bin/python3 /home/ubuntu/project_01/stockToKakao/p6_set_bp_and_send_message/setBpAndSendMessage.py >> /home/ubuntu/project_01/stockToKakao/logs/log_06_setBp.log
 
 # 장 마감 후 대형주 재무건전성 판단한다.
-# 월~ 금 16시50분
-49 16 * * 1-5 rm /home/ubuntu/project_01/stockToKakao/logs/log_11_filter_big_stock_info.log
-50 16 * * 1-5 /home/ubuntu/stock_test/bin/python3 /home/ubuntu/project_01/stockToKakao/p11_get_filltered_big_stock_info/getFillteredBigStockInfo.py >> /home/ubuntu/project_01/stockToKakao/logs/log_11_filter_big_stock_info.log
+# 월~ 금 17시00분
+59 16 * * 1-5 rm /home/ubuntu/project_01/stockToKakao/logs/log_11_filter_big_stock_info.log
+00 17 * * 1-5 /home/ubuntu/stock_test/bin/python3 /home/ubuntu/project_01/stockToKakao/p11_get_filltered_big_stock_info/getFillteredBigStockInfo.py >> /home/ubuntu/project_01/stockToKakao/logs/log_11_filter_big_stock_info.log
 
 # 대형주 재무건전성 판단후 이평선 정보를 설정한다
-# 월~ 금 17시 00분
-49 16 * * 1-5 rm /home/ubuntu/project_01/stockToKakao/logs/log_12_setMa.log
-50 16 * * 1-5 /home/ubuntu/stock_test/bin/python3 /home/ubuntu/project_01/stockToKakao/p12_set_ma_and_send_message/setMaAndSendMessage.py >> /home/ubuntu/project_01/stockToKakao/logs/log_12_setMa.log
+# 월~ 금 17시 10분
+09 17 * * 1-5 rm /home/ubuntu/project_01/stockToKakao/logs/log_12_setMa.log
+10 17 * * 1-5 /home/ubuntu/stock_test/bin/python3 /home/ubuntu/project_01/stockToKakao/p12_set_ma_and_send_message/setMaAndSendMessage.py >> /home/ubuntu/project_01/stockToKakao/logs/log_12_setMa.log
 
 # 장 시작 후 전고점 정보를 참고하여 급등주 포착한다
 # 월~ 금 매일 09시 00분 ~ 16시 00분
