@@ -1,4 +1,4 @@
-# 종목 기본정보를 내려 받는다. 
+# 종목 기본정보를 내려 받는다.
 # 월~금 매일  16시
 59 15 * * 1-5 rm /home/ubuntu/project_01/stockToKakao/logs/log_02_stockInfo.log
 0 16 * * 1-5 /home/ubuntu/stock_test/bin/python3 /home/ubuntu/project_01/stockToKakao/p2_get_stock_basic_info/getBasicStockInfo.py >> /home/ubuntu/project_01/stockToKakao/logs/log_02_stockInfo.log

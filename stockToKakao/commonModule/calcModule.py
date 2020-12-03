@@ -110,3 +110,10 @@ def coefficient_of_variation(valList):
 
     # 결과리턴
     return {"avg": avg, "std": std, "cv": cv}
+
+
+# 리스트 자르기
+def divide_list(in_list, n):
+    # 리스트 l의 길이가 n이면 계속 반복
+    for i in range(0, len(in_list), n):
+        yield in_list[i:i + n]

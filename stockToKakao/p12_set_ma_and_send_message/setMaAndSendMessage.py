@@ -4,7 +4,7 @@ import traceback
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
-from stockToKakao.commonModule import dbModule, messageModule
+from stockToKakao.commonModule import dbModule, messageModule, calcModule
 from stockToKakao.p12_set_ma_and_send_message.bizLogic.cal_move_avg_values import cal_move_avg_values
 
 
@@ -32,6 +32,9 @@ def sub_process_01(in_stc_id=None):
 
     # 친구목록수신
     uuids = messageModule.get_friends(headers)
+
+    # 친구 목록을 5개씩 나눔(카카오 한번에 최대 5명까지만 지원하므로)
+    uuids_list = list(calcModule.divide_list(uuids, 5))
 
     # 조회된 건수 바탕으로 data 세팅 및 메시지 송신
     for row in rows:
@@ -184,10 +187,12 @@ def sub_process_01(in_stc_id=None):
             # 메시지 송신
             # if yn_now or yn_5 or yn_20 or yn_60 or yn_120:
             if yn_20:
-                # 데이터세팅
-                data = messageModule.set_data(stc_id, stc_name, msg_final, uuids)
-                # 메시지송신
-                messageModule.send_message_to_friends(headers, data)
+                # 데이터세팅 및 메시지송신
+                for friends in uuids_list:
+                    # 데이터세팅
+                    data = messageModule.set_data(stc_id, stc_name, msg_final, friends)
+                    # 메시지송신
+                    messageModule.send_message_to_friends(headers, data)
 
                 # 결과저장
                 sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd, msg ) " \

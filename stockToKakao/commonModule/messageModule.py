@@ -40,6 +40,7 @@ def get_friends(headers):
     url = "https://kapi.kakao.com/v1/api/talk/friends"
     result = json.loads(requests.get(url, headers=headers).text)
     uuids = []
+
     friends_list = result.get("elements")
     print("수신 친구 목록")
     for friend in friends_list:
