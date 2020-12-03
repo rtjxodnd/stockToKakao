@@ -37,15 +37,24 @@ def set_data(stc_id, stc_name, text, uuids):
 
 # 친구목록수신
 def get_friends(headers):
-    url = "https://kapi.kakao.com/v1/api/talk/friends"
+    url = "https://kapi.kakao.com/v1/api/talk/friends?limit=100"
     result = json.loads(requests.get(url, headers=headers).text)
     uuids = []
-
+    after_url = result.get("after_url")
     friends_list = result.get("elements")
     print("수신 친구 목록")
     for friend in friends_list:
         print(friend['profile_nickname'], friend['uuid'])
         uuids.append(friend['uuid'])
+
+    # 10명씩 검색되고 추가 검색하는 경우 (위에서 limit=100 했으므로 일단은 안타도 된다)
+    # while after_url is not None:
+    #     result = json.loads(requests.get(after_url, headers=headers).text)
+    #     after_url = result.get("after_url")
+    #     friends_list = result.get("elements")
+    #     for friend in friends_list:
+    #         print(friend['profile_nickname'], friend['uuid'])
+    #         uuids.append(friend['uuid'])
     return uuids
 
 

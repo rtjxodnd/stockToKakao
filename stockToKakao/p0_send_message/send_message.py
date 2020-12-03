@@ -1,12 +1,10 @@
-import json
-import requests
 import logging
 import sys
 import os
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
-from stockToKakao.commonModule import dbModule, messageModule, calcModule
+from stockToKakao.commonModule import messageModule, calcModule
 
 # 로거
 logger = logging.getLogger(__name__)
@@ -21,7 +19,6 @@ def main_process():
 
     # 당일
     now_time = datetime.today().strftime("%Y%m%d%H%M%S")
-    today = now_time[0:8]
 
     # 친구목록수신
     uuids = messageModule.get_friends(headers)
@@ -35,12 +32,12 @@ def main_process():
         stc_id = '005930'
         stc_name = '테스트_삼성전자'
 
-        for friends in uuids_list:
-            # 데이터세팅
-            data = messageModule.set_data(stc_id, stc_name, '메시지송신 테스트입니다.', friends)
-
-            # 메시지송신
-            messageModule.send_message_to_friends(headers, data)
+        # for friends in uuids_list:
+        #     # 데이터세팅
+        #     data = messageModule.set_data(stc_id, stc_name, '메시지송신 테스트입니다.', friends)
+        #
+        #     # 메시지송신
+        #     messageModule.send_message_to_friends(headers, data)
 
     except Exception as ex:
         logger.error("ERROR!!!!: main_process")
