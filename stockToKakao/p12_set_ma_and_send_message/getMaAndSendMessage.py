@@ -9,7 +9,7 @@ from stockToKakao.p12_set_ma_and_send_message.bizLogic.cal_move_avg_values impor
 
 
 # 작업모드 1번: 이평선 돌파시 메시지 송신
-def sub_process_01(in_stc_id=None):
+def get_ma_and_send_message(in_stc_id=None):
     # DB 모듈선언
     db_class = dbModule.Database()
 
@@ -21,7 +21,8 @@ def sub_process_01(in_stc_id=None):
 
     # 대상건 조회
     sql = "select a.stc_id, b.stc_name, a.now_price, a.ma5, a.ma20, a.ma60, a.ma120, a.ma240 " \
-          "from stock_search.stock_move_avg a, stock_search.stock_basic b where a.stc_id = b.stc_id "
+          "from stock_search.stock_move_avg a, stock_search.stock_basic b " \
+          "where a.stc_id = b.stc_id and substring(bin(b.filter_bcd), -2, 1) = '1'"
 
     if in_stc_id is not None:
         sql = "select a.stc_id, b.stc_name, a.now_price, a.ma5, a.ma20, a.ma60, a.ma120, a.ma240 " \
@@ -208,56 +209,6 @@ def sub_process_01(in_stc_id=None):
     return
 
 
-# 작업모드 2번: 이평선 정보 및 현재가 가져오기
-def sub_process_02(in_stc_id=None):
-    # DB 모듈선언
-    db_class = dbModule.Database()
-
-    # 데이타 clear
-    sql = "DELETE from stock_search.stock_move_avg"
-    db_class.execute(sql)
-    db_class.commit()
-
-    # 대상건 조회
-    sql = "SELECT stc_id " \
-          "FROM stock_search.stock_basic " \
-          "WHERE substring(bin(filter_bcd), -2, 1) = '1'"
-    if in_stc_id is not None:
-        sql = "SELECT stc_id FROM stock_search.stock_basic WHERE stc_id = '%s'" % in_stc_id
-
-    rows = db_class.executeAll(sql)
-
-    # 조회된 건수 바탕으로 data 세팅
-    for i, row in enumerate(rows):
-        try:
-            if i % 10 == 0:
-                print("이평선정보 계산중.... 전체:", len(rows), "건, 현재: ", i, "건")
-
-            # 대상 데이터
-            stc_id = row['stc_id']
-
-            # 현재가 및 이동평균가격
-            price_info = cal_move_avg_values(stc_id)
-            now_price = price_info['now_price']
-            ma5 = price_info['ma5']
-            ma20 = price_info['ma20']
-            ma60 = price_info['ma60']
-            ma120 = price_info['ma120']
-            ma240 = price_info['ma240']
-
-            # 이평선정보 저장
-            sql = "insert into stock_search.stock_move_avg (stc_id ,now_price, ma5, ma20, ma60, ma120, ma240) " \
-                  "values( '%s','%d','%d','%d','%d','%d','%d')" % (stc_id, now_price, ma5, ma20, ma60, ma120, ma240)
-            db_class.execute(sql)
-            db_class.commit()
-        except Exception as ex:
-            traceback.print_exc()
-
-    db_class.commit()
-    print("이평선정보 재설정 완료")
-    return
-
-
 def main_process(in_stc_id=None):
     # 시작시간
     start_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
@@ -265,11 +216,8 @@ def main_process(in_stc_id=None):
     # 현재시간
     now_time = datetime.today().strftime("%H%M%S")
 
-    # 시간대별 다른 프로세스 수행
-    if '090000' <= now_time < '160000':
-        sub_process_01(in_stc_id)
-    else:
-        sub_process_02(in_stc_id)
+    # 프로세스 수행
+    get_ma_and_send_message(in_stc_id)
 
     # 종료 시간
     end_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")

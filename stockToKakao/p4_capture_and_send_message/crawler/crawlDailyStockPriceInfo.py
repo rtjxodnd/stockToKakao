@@ -31,6 +31,7 @@ def find_stock_values_of_one(tds):
                     "opn_price": opn_price,
                     "hig_price": hig_price,
                     "low_price": low_price,
+                    "dealQnt": float(deal_qnt),
                     "dealAmt": deal_amt}
 
     # return
@@ -78,4 +79,4 @@ def main_process(stc_id):
 
 
 if __name__ == "__main__":
-    main_process('005930')
+    print(main_process('000590'))

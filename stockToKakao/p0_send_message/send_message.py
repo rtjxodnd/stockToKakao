@@ -34,7 +34,7 @@ def main_process():
 
         # for friends in uuids_list:
         #     # 데이터세팅
-        #     data = messageModule.set_data(stc_id, stc_name, '메시지송신 테스트입니다.', friends)
+        #     data = messageModule.set_data(stc_id, stc_name, '한번만 더 테스트 할게요~ 사람 많으면 메시지 송신할때 예외가 좀 있넹', friends)
         #
         #     # 메시지송신
         #     messageModule.send_message_to_friends(headers, data)

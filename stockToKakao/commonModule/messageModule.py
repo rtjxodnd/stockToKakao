@@ -55,6 +55,9 @@ def get_friends(headers):
     #     for friend in friends_list:
     #         print(friend['profile_nickname'], friend['uuid'])
     #         uuids.append(friend['uuid'])
+
+    # for test (to 서태웅 only)
+    # uuids = ["xPbH88DyyvzJ5dfk0OHU4tDp3vLH98HwwvOF"]
     return uuids
 
 

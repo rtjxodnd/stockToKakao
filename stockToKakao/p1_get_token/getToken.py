@@ -25,7 +25,7 @@ def oauth():
 
     # owner가 아니면 리턴
     if result['id'] != 1535632259:
-        return '로그인 및 약관동의 완료!!'
+        return '로그인 및 약관동의 완료!! \n 이제 카카오톡에서 findstockgogo 친구추가 해주세요.'
 
     # 기존 owner 계정 토큰 제거
     db_class = dbModule.Database()
