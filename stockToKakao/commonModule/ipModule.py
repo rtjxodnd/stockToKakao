@@ -6,7 +6,7 @@ def get_ip():
 
     # aws 인 경우와 로컬pc 인경우
     if in_ip == '172.31.6.179':
-        ex_ip = {'ip': '13.209.145.52', 'ip_name': 'awsServer'}
+        ex_ip = {'ip': '3.36.33.126', 'ip_name': 'awsServer'}
     else:
         ex_ip = {'ip': 'localhost', 'ip_name': 'localServer'}
 
