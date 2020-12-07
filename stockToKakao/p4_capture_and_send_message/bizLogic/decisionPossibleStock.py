@@ -35,8 +35,8 @@ def decision_possible_stock(stc_id):
     if float(tdy_prices_info['cls_price']) < avg_5:
         return {"cls_price": 0, "dealQnt": 0}
 
-    # 끝까지 모든 조건 충족시 당일종가 및 거래량 리턴
-    return {"cls_price": float(tdy_prices_info['cls_price']), "dealQnt": tdy_prices_info['dealQnt']}
+    # 끝까지 모든 조건 충족시 당일종가 및 전 거래량 리턴
+    return {"cls_price": float(tdy_prices_info['cls_price']), "dealQnt": bf1_prices_info['dealQnt']}
 
 
 if __name__ == '__main__':
