@@ -22,7 +22,7 @@ def main_process():
     today = now_time[0:8]
 
     # 조회 기준일
-    base_time = (datetime.today() - timedelta(days=14)).strftime("%Y%m%d%H%M%S")
+    base_time = (datetime.today() - timedelta(days=30)).strftime("%Y%m%d%H%M%S")
     base_dt = base_time[0:8]
 
     # 제외 기준일
@@ -38,7 +38,7 @@ def main_process():
     db_class.commit()
 
     # 대상건 조회
-    # 14일 이내에 상승 가능성 예측된 종목 중에서 유통주식수 대비 거래량이 50% 이상인 것 추출
+    # 30일 이내에 상승 가능성 예측된 종목 중에서 유통주식수 대비 거래량이 50% 이상인 것 추출
     # 그 중에서 7일 이내에 상승예상 종목 확인으로 알림 준것은 제외 한다.
     sql = "SELECT distinct a.stc_id, a.stc_name from stock_search.stock_basic a, stock_search.stock_captured b " \
           "where a.stc_id = b.stc_id and b.capture_tcd = '01' " \
