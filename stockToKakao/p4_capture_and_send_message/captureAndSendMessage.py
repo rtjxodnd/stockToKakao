@@ -47,7 +47,7 @@ def main_process():
           "AND (a.stc_id, a.stc_name) NOT IN(" \
           "SELECT a.stc_id, a.stc_name from stock_search.stock_basic a, stock_search.stock_captured b " \
           "where a.stc_id = b.stc_id and b.capture_tcd = '04' " \
-          "AND substring(b.capture_dttm, 1, 8) >= '%s')" % (20, base_dt, except_dt)
+          "AND substring(b.capture_dttm, 1, 8) >= '%s')" % (50, base_dt, except_dt)
     rows = db_class.executeAll(sql)
 
     # 친구목록수신
