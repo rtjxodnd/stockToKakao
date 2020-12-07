@@ -9,7 +9,7 @@
 10 16 * * 1-5 /home/ubuntu/stock_test/bin/python3 /home/ubuntu/project_01/stockToKakao/p3_get_filtered_stock_info/getFilteredStockInfo.py >> /home/ubuntu/project_01/stockToKakao/logs/log_03_fillteredStockInfo.log
 
 # 1차 선별 종목 중 상승가능성 있는 종목 DB저장
-# 월~금 16시30분
+# 월~금 매일 16시30분
 29 16 * * 1-5 rm /home/ubuntu/project_01/stockToKakao/logs/log_04_possibilityToIncrease.log
 30 16 * * 1-5 /home/ubuntu/stock_test/bin/python3 /home/ubuntu/project_01/stockToKakao/p4_capture_and_send_message/possibilityToIncrease.py  >> /home/ubuntu/project_01/stockToKakao/logs/log_04_possibilityToIncrease.log
 
