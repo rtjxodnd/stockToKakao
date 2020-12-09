@@ -32,11 +32,11 @@ def decision_capture_stock(stc_id):
         return cls_price
 
     # 종가와 20이평선 차이가 2% 이내이면 현재가 리턴
-    if (cls_price / ma20) <= 1.02:
+    if (cls_price / ma20) <= 1.03:
         return cls_price
 
     # 저가와 20이평선 차이가 1% 이내이면 현재가 리턴
-    if (low_price / ma20) <= 1.01:
+    if (low_price / ma20) <= 1.02:
         return cls_price
 
     # 끝까지 모든 조건 미충족시 0 리턴

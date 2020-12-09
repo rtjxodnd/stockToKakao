@@ -38,7 +38,7 @@ def main_process():
     db_class.commit()
 
     # 대상건 조회
-    # 30일 이내에 상승 가능성 예측된 종목 중에서 유통주식수 대비 거래량이 50% 이상인 것 추출
+    # 30일 이내에 상승 가능성 예측된 종목 중에서 유통주식수 대비 거래량이 0% 이상인 것 추출
     # 그 중에서 7일 이내에 상승예상 종목 확인으로 알림 준것은 제외 한다.
     sql = "SELECT distinct a.stc_id, a.stc_name from stock_search.stock_basic a, stock_search.stock_captured b " \
           "where a.stc_id = b.stc_id and b.capture_tcd = '01' " \
@@ -47,7 +47,7 @@ def main_process():
           "AND (a.stc_id, a.stc_name) NOT IN(" \
           "SELECT a.stc_id, a.stc_name from stock_search.stock_basic a, stock_search.stock_captured b " \
           "where a.stc_id = b.stc_id and b.capture_tcd = '04' " \
-          "AND substring(b.capture_dttm, 1, 8) >= '%s')" % (50, base_dt, except_dt)
+          "AND substring(b.capture_dttm, 1, 8) >= '%s')" % (0, base_dt, except_dt)
     rows = db_class.executeAll(sql)
 
     # 친구목록수신
