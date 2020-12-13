@@ -44,4 +44,4 @@ def decision_possible_stock(stc_id):
 
 
 if __name__ == '__main__':
-    print(decision_possible_stock('299900'))
+    print(decision_possible_stock('289010'))
