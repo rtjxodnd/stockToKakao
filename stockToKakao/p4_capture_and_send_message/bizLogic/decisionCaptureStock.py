@@ -3,7 +3,7 @@ from stockToKakao.p4_capture_and_send_message.crawler.crawlDailyStockPriceInfo i
 
 
 # 종목 스크린 main
-def decision_capture_stock(stc_id):
+def decision_capture_stock(stc_id, opn_price=0, hig_price=0, low_price=0, cls_price=0):
     # DB 모듈선언
     db_class = dbModule.Database()
 
@@ -15,32 +15,40 @@ def decision_capture_stock(stc_id):
 
     # 전달값 저장
     tdy_prices_info = daily_stock_price_info(stc_id)[0]
-    cls_price = float(tdy_prices_info['cls_price'])
-    opn_price = float(tdy_prices_info['opn_price'])
-    hig_price = float(tdy_prices_info['hig_price'])
-    low_price = float(tdy_prices_info['low_price'])
+    tdy_cls_price = float(tdy_prices_info['cls_price'])
+    tdy_opn_price = float(tdy_prices_info['opn_price'])
+    tdy_hig_price = float(tdy_prices_info['hig_price'])
+    tdy_low_price = float(tdy_prices_info['low_price'])
 
     # DB 조회값
     ma20 = float(row['ma20'])
 
-    # 종가가 20 이평선보다 아래에 있으면 현재가 리턴
-    if cls_price < ma20:
-        return cls_price
+    # 종가가 20 이평선보다 위에 있으면 0 리턴
+    if tdy_cls_price > ma20:
+        return 0
 
-    # 저가가 20 이평선보다 아래에 있으면 현재가 리턴
-    if low_price < ma20:
-        return cls_price
+    # 저가가 20 이평선보다 위에 있으면 0 리턴
+    if tdy_low_price > ma20:
+        return 0
 
-    # 종가와 20이평선 차이가 2% 이내이면 현재가 리턴
-    if (cls_price / ma20) <= 1.03:
-        return cls_price
+    # 종가와 20이평선 차이가 2% 초과이면 0 리턴
+    if (tdy_cls_price / ma20) > 1.03:
+        return 0
 
-    # 저가와 20이평선 차이가 1% 이내이면 현재가 리턴
-    if (low_price / ma20) <= 1.02:
-        return cls_price
+    # 저가와 20이평선 차이가 1% 초과이면 0 리턴
+    if (tdy_low_price / ma20) > 1.02:
+        return 0
+
+    # 종가가 가능성 판별일 종가보다 3% 초과인 경우 현재가 리턴
+    if (tdy_cls_price / cls_price) > 1.03:
+        return 0
+
+    # 종가가 가능성 판별일 종가보다 3% 미달인 경우 현재가 리턴
+    if (tdy_cls_price / cls_price) < 0.97:
+        return 0
 
     # 끝까지 모든 조건 미충족시 0 리턴
-    return 0
+    return tdy_cls_price
 
 
 if __name__ == '__main__':

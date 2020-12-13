@@ -1,5 +1,3 @@
-import json
-import requests
 import traceback
 import sys
 import os
@@ -40,12 +38,14 @@ def main_process():
     # 대상건 조회
     # 30일 이내에 상승 가능성 예측된 종목 중에서 유통주식수 대비 거래량이 0% 이상인 것 추출
     # 그 중에서 7일 이내에 상승예상 종목 확인으로 알림 준것은 제외 한다.
-    sql = "SELECT distinct a.stc_id, a.stc_name from stock_search.stock_basic a, stock_search.stock_captured b " \
+    sql = "SELECT distinct a.stc_id, a.stc_name " \
+          "from stock_search.stock_basic a, stock_search.stock_captured b " \
           "where a.stc_id = b.stc_id and b.capture_tcd = '01' " \
           "and b.rate_of_quant > %d " \
           "AND substring(b.capture_dttm, 1, 8) >= '%s'" \
           "AND (a.stc_id, a.stc_name) NOT IN(" \
-          "SELECT a.stc_id, a.stc_name from stock_search.stock_basic a, stock_search.stock_captured b " \
+          "SELECT a.stc_id, a.stc_name " \
+          "from stock_search.stock_basic a, stock_search.stock_captured b " \
           "where a.stc_id = b.stc_id and b.capture_tcd = '04' " \
           "AND substring(b.capture_dttm, 1, 8) >= '%s')" % (0, base_dt, except_dt)
     rows = db_class.executeAll(sql)
@@ -63,8 +63,20 @@ def main_process():
             stc_id = row['stc_id']
             stc_name = row['stc_name']
 
+            # 가능성 식별시점 가격 조회
+            inner_sql = "select price, low_price, hig_price, opn_price " \
+                        "from stock_search.stock_captured " \
+                        "where stc_id = '%s' and capture_tcd = '01' " \
+                        "order by capture_dttm desc" % stc_id
+            inner_row = db_class.executeOne(inner_sql)
+
+            opn_price = float(inner_row['opn_price'])
+            hig_price = float(inner_row['hig_price'])
+            low_price = float(inner_row['low_price'])
+            cls_price = float(inner_row['price'])
+
             # 판별 및 전송 (capture_stock 은 조건에 맞으면 종가를 리턴하고 조건에 안맞으면 0을 리턴한다.)
-            price = decision_capture_stock(stc_id)
+            price = decision_capture_stock(stc_id, opn_price, hig_price, low_price, cls_price)
             if price > 0:
 
                 # 데이터세팅 및 메시지 송신

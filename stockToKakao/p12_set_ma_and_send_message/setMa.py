@@ -14,16 +14,31 @@ def set_ma(in_stc_id=None):
     db_class = dbModule.Database()
 
     # 데이타 clear
-    sql = "DELETE from stock_search.stock_move_avg"
+    if in_stc_id is not None:
+        sql = "DELETE from stock_search.stock_move_avg WHERE stc_id = '%s'" % in_stc_id
+    else:
+        if len(sys.argv) > 1:
+            if sys.argv[1] == 'other_day':
+                sql = "DELETE from stock_search.stock_move_avg a where exists ( " \
+                      "select 'x' from stock_search.stock_basic z where z.stc_id = a.stc_id and bin(z.filter_bcd) > 0)"
+            elif sys.argv[1] == 'friday':
+                sql = "DELETE from stock_search.stock_move_avg"
+        else:
+            sql = "DELETE from stock_search.stock_move_avg"
     db_class.execute(sql)
     db_class.commit()
 
     # 대상건 조회
-    sql = "SELECT stc_id " \
-          "FROM stock_search.stock_basic "
     if in_stc_id is not None:
         sql = "SELECT stc_id FROM stock_search.stock_basic WHERE stc_id = '%s'" % in_stc_id
-
+    else:
+        if len(sys.argv) > 1:
+            if sys.argv[1] == 'other_day':
+                sql = "SELECT stc_id FROM stock_search.stock_basic where bin(filter_bcd) > 0"
+            elif sys.argv[1] == 'friday':
+                sql = "SELECT stc_id FROM stock_search.stock_basic "
+        else:
+            sql = "SELECT stc_id FROM stock_search.stock_basic "
     rows = db_class.executeAll(sql)
 
     # 조회된 건수 바탕으로 data 세팅
