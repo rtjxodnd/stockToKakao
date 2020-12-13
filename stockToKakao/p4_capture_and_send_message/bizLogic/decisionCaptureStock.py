@@ -52,4 +52,5 @@ def decision_capture_stock(stc_id, opn_price=0, hig_price=0, low_price=0, cls_pr
 
 
 if __name__ == '__main__':
-    print(decision_capture_stock('017040'))
+    print(decision_capture_stock('149980'))
+#     095500, 149980, 017040
