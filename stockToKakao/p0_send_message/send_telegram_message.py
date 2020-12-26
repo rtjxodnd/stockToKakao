@@ -1,6 +1,9 @@
 import telegram
-token = '1464479777:AAFhQAL7l7beuWbJivYbReXNEHqfePYlFr4'
-bot = telegram.Bot(token=token)
+telgm_token = '1464479777:AAFhQAL7l7beuWbJivYbReXNEHqfePYlFr4'
+bot = telegram.Bot(token=telgm_token)
+updates = bot.getUpdates()
+print(updates)
+for i in updates:
+    print(i)
 
-for i in bot.getUpdates():
-    print(i.message)
+print('start telegram chat bot')
