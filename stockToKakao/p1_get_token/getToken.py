@@ -29,11 +29,12 @@ def oauth():
 
     # 기존 owner 계정 토큰 제거
     db_class = dbModule.Database()
-    sql = "DELETE from stock_search.kakao_token"
+    sql = "DELETE from stock_search.kakao_token where msger_tcd = 'kakao'"
     db_class.execute(sql)
 
     # 신규 owner 계정 토큰 저장
     sql = "INSERT INTO stock_search.kakao_token(" \
+          "msger_tcd, " \
           "code, " \
           "access_token, " \
           "token_type, " \
@@ -41,7 +42,7 @@ def oauth():
           "expires_in, " \
           "scope, " \
           "refresh_token_expires_in) " \
-          "VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s')" % \
+          "VALUES('kakao', '%s', '%s', '%s', '%s', '%s', '%s', '%s')" % \
           (str(code),  str(resToken['access_token']),  str(resToken['token_type']),
            str(resToken['refresh_token']),  str(resToken['expires_in']),
            str(resToken['scope']),  str(resToken['refresh_token_expires_in']))

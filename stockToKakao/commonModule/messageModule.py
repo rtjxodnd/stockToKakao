@@ -7,7 +7,7 @@ from stockToKakao.commonModule import dbModule
 def set_headers():
     # 토큰조회
     db_class = dbModule.Database()
-    sql = "SELECT access_token from stock_search.kakao_token"
+    sql = "SELECT access_token from stock_search.kakao_token where msger_tcd = 'kakao'"
     row = db_class.executeOne(sql)
 
     # 헤더세팅
