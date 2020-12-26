@@ -4,6 +4,6 @@ bot = telegram.Bot(token=telgm_token)
 updates = bot.getUpdates()
 print(updates)
 for i in updates:
-    print(i.message)
+    print(i)
 
 print('start telegram chat bot')
