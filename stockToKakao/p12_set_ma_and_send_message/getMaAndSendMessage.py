@@ -4,7 +4,7 @@ import traceback
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
-from stockToKakao.commonModule import dbModule, messageModule, calcModule
+from stockToKakao.commonModule import dbModule, messageModule, calcModule, telegramModule
 from stockToKakao.p12_set_ma_and_send_message.bizLogic.cal_move_avg_values import cal_move_avg_values
 
 
@@ -188,12 +188,16 @@ def get_ma_and_send_message(in_stc_id=None):
             # 메시지 송신
             # if yn_now or yn_5 or yn_20 or yn_60 or yn_120:
             if yn_20:
-                # 데이터세팅 및 메시지송신
+                # 데이터세팅 및 메시지송신 (추후삭제)
                 for friends in uuids_list:
                     # 데이터세팅
                     data = messageModule.set_data(stc_id, stc_name, msg_final, friends)
                     # 메시지송신
                     messageModule.send_message_to_friends(headers, data)
+
+                # 데이터 세팅 및 텔레그램 메시지 송신
+                msg = telegramModule.set_data(stc_id, stc_name, msg_final)
+                telegramModule.send_message_to_friends(msg)
 
                 # 결과저장
                 sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd, msg ) " \

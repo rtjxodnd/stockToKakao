@@ -4,7 +4,7 @@ import traceback
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
-from stockToKakao.commonModule import dbModule, messageModule
+from stockToKakao.commonModule import dbModule, messageModule, telegramModule
 from stockToKakao.p6_set_bp_and_send_message.crawler.crawlStockNowPrice import getStockNowPrice
 from stockToKakao.p6_set_bp_and_send_message.bizLogic.calBfNxResisPrice import cal_before_next_price
 from stockToKakao.p6_set_bp_and_send_message.bizLogic.increaseYn import increase_yn
@@ -65,10 +65,15 @@ def sub_process_01():
             # 현재가가 다음 전고점보다 높아졌으면서 현재가가 당일 고가보다 크거나 같고 거래량 및 가격 기준에 부합하는 경우
             # 메시지 송신
             if now_price > next_price and now_price >= high_price and increase_yn(stc_id):
-                # 데이터세팅
+
+                # 데이터세팅 (추후삭제)
                 data = messageModule.set_data(stc_id, stc_name, "전고점 돌파!!!", uuids)
-                # 메시지송신
+                # 메시지송신 (추후삭제)
                 messageModule.send_message_to_myself(headers, data)
+
+                # 데이터 세팅 및 텔레그램 메시지 송신
+                msg = telegramModule.set_data(stc_id, stc_name, '전고점 돌파!!!')
+                telegramModule.send_message_to_friends(msg)
 
                 # 결과저장
                 sql = "insert into stock_search.stock_captured (capture_dttm, stc_id, price, capture_tcd, msg ) " \
