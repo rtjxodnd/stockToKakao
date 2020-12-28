@@ -24,7 +24,9 @@ def set_data(stc_id, stc_name, text, uuids):
         "template_object": json.dumps({"object_type": "text",
                                        "text": text + "\n "
                                                "[" + stc_name + "]\n"
-                                               " https://finance.naver.com/item/main.nhn?code=" + stc_id,
+                                               " https://finance.naver.com/item/main.nhn?code=" + stc_id + "\n\n\n "
+                                               " 2021년 부터는 본 카카오톡 메시지는 보내지 않습니다. \n 텔레그램에서 만나여~ \n"
+                                               " https://t.me/joinchat/SiW1w6t5qqQ_pydG",
                                        "link": {
                                            "web_url": "https://www.daum.com/",
                                            "mobile_web_url": "https://www.daum.com/"},
@@ -57,7 +59,7 @@ def get_friends(headers):
     #         uuids.append(friend['uuid'])
 
     # for test (to 서태웅 only)
-    uuids = ["xPbH88DyyvzJ5dfk0OHU4tDp3vLH98HwwvOF"]
+    # uuids = ["xPbH88DyyvzJ5dfk0OHU4tDp3vLH98HwwvOF"]
     return uuids
 
 
