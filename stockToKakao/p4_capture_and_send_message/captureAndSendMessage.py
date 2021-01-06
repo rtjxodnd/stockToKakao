@@ -4,16 +4,13 @@ import os
 from datetime import datetime, timedelta
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
-from stockToKakao.commonModule import dbModule, messageModule, calcModule, telegramModule
+from stockToKakao.commonModule import dbModule, calcModule, telegramModule
 from stockToKakao.p4_capture_and_send_message.bizLogic.decisionCaptureStock import decision_capture_stock
 
 
 def main_process():
     # 시작시간
     start_time = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
-
-    # 헤더세팅
-    headers = messageModule.set_headers()
 
     # 당일
     now_time = datetime.today().strftime("%Y%m%d%H%M%S")
@@ -50,12 +47,6 @@ def main_process():
           "AND substring(b.capture_dttm, 1, 8) >= '%s')" % (0, base_dt, except_dt)
     rows = db_class.executeAll(sql)
 
-    # 친구목록수신
-    uuids = messageModule.get_friends(headers)
-
-    # 친구 목록을 5개씩 나눔(카카오 한번에 최대 5명까지만 지원하므로)
-    uuids_list = list(calcModule.divide_list(uuids, 5))
-    print(uuids_list)
     # 조회된 건수 바탕으로 판별 및 송신
     for row in rows:
         try:
@@ -78,14 +69,6 @@ def main_process():
             # 판별 및 전송 (capture_stock 은 조건에 맞으면 종가를 리턴하고 조건에 안맞으면 0을 리턴한다.)
             price = decision_capture_stock(stc_id, opn_price, hig_price, low_price, cls_price)
             if price > 0:
-
-                # 데이터세팅 및 메시지 송신 (추후삭제)
-                for friends in uuids_list:
-                    # 데이터세팅
-                    data = messageModule.set_data(stc_id, stc_name, '상승예상 종목확인!!', friends)
-
-                    # 메시지송신
-                    messageModule.send_message_to_friends(headers, data)
 
                 # 데이터 세팅 및 텔레그램 메시지 송신
                 msg = telegramModule.set_data(stc_id, stc_name, '상승예상 종목확인!!')

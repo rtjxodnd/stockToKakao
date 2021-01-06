@@ -4,7 +4,7 @@ import traceback
 from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
-from stockToKakao.commonModule import dbModule, messageModule, telegramModule
+from stockToKakao.commonModule import dbModule, telegramModule
 from stockToKakao.p6_set_bp_and_send_message.crawler.crawlStockNowPrice import getStockNowPrice
 from stockToKakao.p6_set_bp_and_send_message.bizLogic.calBfNxResisPrice import cal_before_next_price
 from stockToKakao.p6_set_bp_and_send_message.bizLogic.increaseYn import increase_yn
@@ -15,9 +15,6 @@ def sub_process_01():
     # DB 모듈선언
     db_class = dbModule.Database()
 
-    # 메시지 헤더세팅
-    headers = messageModule.set_headers()
-
     # 당일
     now_time = datetime.today().strftime("%Y%m%d%H%M%S")
 
@@ -25,9 +22,6 @@ def sub_process_01():
     sql = "select a.stc_id, b.stc_name, a.now_price, a.before_price, a.next_price, b.resistance_price " \
           "from stock_search.stock_breakthrough a, stock_search.stock_basic b where a.stc_id = b.stc_id "
     rows = db_class.executeAll(sql)
-
-    # 친구목록수신
-    uuids = messageModule.get_friends(headers)
 
     # 조회된 건수 바탕으로 data 세팅 및 메시지 송신
     for row in rows:
@@ -65,11 +59,6 @@ def sub_process_01():
             # 현재가가 다음 전고점보다 높아졌으면서 현재가가 당일 고가보다 크거나 같고 거래량 및 가격 기준에 부합하는 경우
             # 메시지 송신
             if now_price > next_price and now_price >= high_price and increase_yn(stc_id):
-
-                # 데이터세팅 (추후삭제)
-                data = messageModule.set_data(stc_id, stc_name, "전고점 돌파!!!", uuids)
-                # 메시지송신 (추후삭제)
-                messageModule.send_message_to_myself(headers, data)
 
                 # 데이터 세팅 및 텔레그램 메시지 송신
                 msg = telegramModule.set_data(stc_id, stc_name, '전고점 돌파!!!')
