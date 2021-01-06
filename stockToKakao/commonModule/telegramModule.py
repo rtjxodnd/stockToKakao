@@ -18,9 +18,8 @@ def send_message_to_friends(data):
     sql = "SELECT code, access_token from stock_search.kakao_token where msger_tcd = 'telegram'"
     row = db_class.executeOne(sql)
 
-    telgm_token = row['access_token']
+    telegram_token = row['access_token']
     chat_id = row['code']
-    bot = telegram.Bot(token=telgm_token)
-
-    bot.sendMessage(chat_id=chat_id, text=data) # -1001243985347, 1464479777:AAFhQAL7l7beuWbJivYbReXNEHqfePYlFr4
+    bot = telegram.Bot(token=telegram_token)
+    bot.sendMessage(chat_id=chat_id, text=data)
     print('친구에게 메시지를 성공적으로 보냈습니다.')

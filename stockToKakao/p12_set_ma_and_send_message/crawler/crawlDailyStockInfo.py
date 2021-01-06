@@ -94,4 +94,4 @@ def crawl_daily_stock_info(stc_id, avg_term):
 
 
 if __name__ == "__main__":
-    print(crawl_daily_stock_info('005930', 360))
+    print(crawl_daily_stock_info('005930', 8))
