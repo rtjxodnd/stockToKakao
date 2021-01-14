@@ -27,7 +27,7 @@ def main_process():
     # 대상건 조회
     sql = "SELECT stc_id, stc_name, num_of_circulation from stock_search.stock_basic where substring(bin(filter_bcd), -1, 1) = '1'"
     rows = db_class.executeAll(sql)
-    print(rows)
+
     # 조회된 건수 바탕으로 판별 및 송신
     for row in rows:
         try:
