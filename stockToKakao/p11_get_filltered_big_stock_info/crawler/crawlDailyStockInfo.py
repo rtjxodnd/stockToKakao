@@ -17,7 +17,7 @@ def get_last_page_of_stock(stc_id):
 
     try:
         url = FINANCE_URL+stc_id
-        page_call_result = requests.get(url)
+        page_call_result = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
         bs_obj = BeautifulSoup(page_call_result.content, "html.parser")
         td_pg_rr = bs_obj.find("td", {"class": "pgRR"})
 

@@ -67,7 +67,7 @@ def find_stock_values_of_one_page(stock_id, page=1):
     try:
         # 데이터 탐색
         url = FINANCE_URL+stock_id+"&page="+str(page)
-        page_call_result = requests.get(url)
+        page_call_result = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
         bs_obj = BeautifulSoup(page_call_result.text, 'lxml')
         _df = pd.read_html(str(bs_obj.find("table")), header=0)[0]
         _df = _df.dropna()

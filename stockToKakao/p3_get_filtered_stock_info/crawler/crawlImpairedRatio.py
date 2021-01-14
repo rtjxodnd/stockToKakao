@@ -13,7 +13,7 @@ def find_impaired_ratio(stc_id, base_ratio = 45):
         # 데이터 탐색
         url = "https://comp.fnguide.com/SVO2/ASP/SVD_main.asp?pGB=1&gicode=A"+str(stc_id)\
               +"&cID=&MenuYn=Y&ReportGB=&NewMenuID=11&stkGb=&strResearchYN="
-        page_call_result = requests.get(url)
+        page_call_result = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
         bs_obj = BeautifulSoup(page_call_result.content.decode('utf-8', 'replace'), "html.parser")
 
         # driver = set_page_driver(url)

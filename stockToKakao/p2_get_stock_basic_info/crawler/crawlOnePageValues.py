@@ -15,7 +15,7 @@ def crawl_one_page_values(sosok=0, page=1):
         # 데이터 탐색
         url = "https://finance.naver.com/sise/sise_market_sum.nhn?sosok="+str(sosok)+"&page="+str(page)
 
-        driver = set_page_driver(url)
+        driver = set_page_driver(url, headers={'User-Agent': 'Mozilla/5.0'})
         bs_obj = BeautifulSoup(driver.page_source, 'html.parser')
         driver.close()
 

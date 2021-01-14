@@ -46,7 +46,7 @@ def find_stock_values_of_one_page(stock_id):
     try:
         # 데이터 탐색
         url = FINANCE_URL+stock_id+"&page=1"
-        page_call_result = requests.get(url)
+        page_call_result = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
         bs_obj = BeautifulSoup(page_call_result.content, "html.parser")
         # driver = set_page_driver(url)
         # bs_obj = BeautifulSoup(driver.page_source, 'html.parser')
@@ -79,4 +79,4 @@ def main_process(stc_id):
 
 
 if __name__ == "__main__":
-    print(main_process('000590'))
+    print(main_process('048910'))

@@ -12,7 +12,7 @@ def getStockDetailInfo(stc_id):
     try:
         # 데이터 탐색
         url = "https://finance.naver.com/item/main.nhn?code=" + str(stc_id)
-        page_call_result = requests.get(url)
+        page_call_result = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
         bs_obj = BeautifulSoup(page_call_result.content.decode('euc-kr', 'replace'), "html.parser")
 
         # driver = set_page_driver(url)
