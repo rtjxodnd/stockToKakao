@@ -155,4 +155,4 @@ def getStockDetailInfo(stc_id):
 
 
 if __name__ == '__main__':
-    print(getStockDetailInfo('36328K'))
+    print(getStockDetailInfo('000590'))
