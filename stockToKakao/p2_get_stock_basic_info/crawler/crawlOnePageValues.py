@@ -15,7 +15,7 @@ def crawl_one_page_values(sosok=0, page=1):
         # 데이터 탐색
         url = "https://finance.naver.com/sise/sise_market_sum.nhn?sosok="+str(sosok)+"&page="+str(page)
 
-        driver = set_page_driver(url, headers={'User-Agent': 'Mozilla/5.0'})
+        driver = set_page_driver(url)
         bs_obj = BeautifulSoup(driver.page_source, 'html.parser')
         driver.close()
 
@@ -29,3 +29,7 @@ def crawl_one_page_values(sosok=0, page=1):
     except Exception as ex:
         logger.error("ERROR!!!!: crawl_one_page_values")
         logger.error(ex)
+
+
+if __name__ == "__main__":
+    print(crawl_one_page_values(sosok=0, page=1))
